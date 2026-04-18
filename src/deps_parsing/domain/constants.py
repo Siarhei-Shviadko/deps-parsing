@@ -1,0 +1,2 @@
+PRESENCE = True
+ABSENCE = False

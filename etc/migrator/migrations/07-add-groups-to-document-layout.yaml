@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-groups-to-document-layout
+      author: Anton Navarka
+      changes:
+        - addColumn:
+            tableName: page
+            columns:
+              - column:
+                  name: groups
+                  type: JSONB
+                  constraints:
+                    nullable: false
+                  defaultValue: '[]'
+      rollback:
+        - dropColumn:
+            columnName: groups
+            tableName: page

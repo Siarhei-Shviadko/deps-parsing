@@ -1,0 +1,138 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Illia Makarov
+    changes:
+    - createTable:
+        tableName: tabular_layout
+        columns:
+        - column:
+            name: id
+            type: VARCHAR(150)
+            constraints:
+              primaryKey: true
+              primaryKeyName: tabular_layout__id__tenant_id__pk
+        - column:
+            name: tenant_id
+            type: VARCHAR(150)
+            constraints:
+              primaryKey: true
+              primaryKeyName: tabular_layout__id__tenant_id__pk
+        - column:
+            name: parsing_type
+            type: VARCHAR(150)
+            constraints:
+              nullable: false
+        - column:
+            name: sheets
+            type: JSONB
+        - column:
+            name: extracted_properties
+            type: JSONB
+    rollback:
+    - dropTable:
+        tableName: tabular_layout
+
+- changeSet:
+    id: 2
+    author: Illia Makarov
+    changes:
+    - createTable:
+        tableName: tabular_layout__table
+        columns:
+        - column:
+            name: id
+            type: VARCHAR(150)
+            constraints:
+              primaryKey: true
+              primaryKeyName: tl_table__id__pk
+        - column:
+            name: tabular_layout_id
+            type: VARCHAR(150)
+        - column:
+            name: sheet_id
+            type: VARCHAR(150)
+        - column:
+            name: column_count
+            type: INTEGER
+        - column:
+            name: row_count
+            type: INTEGER
+        - column:
+            name: placement
+            type: JSONB
+    - createIndex:
+        tableName: tabular_layout__table
+        columns:
+          - column:
+              name: tabular_layout_id
+        indexName: idx_tabular_layout__cell_tabular_layout_id
+
+    rollback:
+    - dropTable:
+        tableName: tabular_layout__table
+
+- changeSet:
+    id: 3
+    author: Illia Makarov
+    changes:
+    - createTable:
+        tableName: tabular_layout__cell
+        columns:
+        - column:
+            name: id
+            type: VARCHAR(150)
+            constraints:
+              primaryKey: true
+              primaryKeyName: tl_cell__id__pk
+        - column:
+            name: table_id
+            type: VARCHAR(150)
+        - column:
+            name: content
+            type: TEXT
+        - column:
+            name: data_type
+            type: VARCHAR(150)
+        - column:
+            name: relative_position_row
+            type: INTEGER
+        - column:
+            name: relative_position_column
+            type: INTEGER
+        - column:
+            name: absolute_position_row
+            type: INTEGER
+        - column:
+            name: absolute_position_column
+            type: INTEGER
+        - column:
+            name: merge
+            type: JSONB
+        - column:
+            name: style
+            type: JSONB
+        - column:
+            name: comment
+            type: JSONB
+        - column:
+            name: alignment
+            type: JSONB
+        - column:
+            name: borders
+            type: JSONB
+    - createIndex:
+        tableName: tabular_layout__cell
+        columns:
+          - column:
+              name: table_id
+          - column:
+              name: relative_position_row
+          - column:
+              name: relative_position_column
+        indexName: idx__tl_cell_relative_position
+        unique: true
+
+    rollback:
+    - dropTable:
+        tableName: tabular_layout__cell

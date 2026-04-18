@@ -1,0 +1,135 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Siarhei Shveadko
+    changes:
+      - dropTable:
+          tableName: test
+    rollback:
+      - createTable:
+          tableName: test
+          columns:
+            - column:
+                name: pk
+                type: VARCHAR(50)
+                constraints:
+                  primaryKey: true
+                  primaryKeyName: test_pkey
+            - column:
+                name: name
+                type: VARCHAR(100)
+
+- changeSet:
+    id: 2
+    author: Siarhei Shveadko
+    changes:
+    - createTable:
+        tableName: document_layout
+        columns:
+        - column:
+            name: id
+            type: VARCHAR(150)
+            constraints:
+              primaryKey: true
+              primaryKeyName: document_layout_id__tenant_id__pk
+              unique: true
+        - column:
+            name: tenant_id
+            type: VARCHAR(150)
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: document_layout_id__tenant_id__pk
+    rollback:
+    - dropTable:
+        tableName: document_layout
+
+- changeSet:
+    id: 3
+    author: Siarhei Shveadko
+    changes:
+    - createTable:
+        tableName: page
+        columns:
+        - column:
+            name: id
+            type: VARCHAR(150)
+            constraints:
+              primaryKey: true
+              primaryKeyName: page_id
+        - column:
+            name: page_number
+            type: SMALLINT
+            constraints:
+              nullable: false
+        - column:
+            name: parsing_type
+            type: VARCHAR(100)
+            constraints:
+              nullable: false
+        - column:
+            name: dimension
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name: languages
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name: file_path
+            type: VARCHAR(150)
+            constraints:
+              nullable: false
+        - column:
+            name: transformations
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name: images
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name: paragraphs
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name: tables
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name: key_value_pairs
+            type: JSONB
+            constraints:
+              nullable: false
+        - column:
+            name:  document_layout_id
+            type: VARCHAR(150)
+            constraints:
+              nullable: false
+              foreignKeyName: document_layout_id_fkey
+              references: document_layout(id)
+              deleteCascade: true
+
+    rollback:
+    - dropTable:
+        tableName: page
+
+- changeSet:
+    id: 4
+    author: Siarhei Shveadko
+    changes:
+    - addUniqueConstraint:
+        columnNames: document_layout_id, page_number, parsing_type
+        constraintName: unique__document_layout_id__page_number__parsing_type
+        tableName: page
+
+    rollback:
+    - dropUniqueConstraint:
+        constraintName: unique__document_layout_id__page_number__parsing_type
+        tableName: page

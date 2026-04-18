@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: parsing-configmap
+  labels:
+    {{- include "deps-parsing.labels" . | nindent 4 }}
+data:
+  ENV: {{ .Values.parsing_settings.ENV }}
+  DATABASE_PORT: '{{ .Values.parsing_settings.DATABASE_PORT }}'
+  DATABASE_DIALECT: '{{ .Values.parsing_settings.DATABASE_DIALECT }}'
+  DATABASE_DRIVER: '{{ .Values.parsing_settings.DATABASE_DRIVER }}'
+  DATABASE_REQUIRE_SECURE_TRANSPORT: '{{ .Values.parsing_settings.DATABASE_REQUIRE_SECURE_TRANSPORT }}'
+
+  {{- if .Values.parsing_settings.DATABASE_REQUIRE_SECURE_TRANSPORT }}
+  DATABASE_SSLKEY: {{ .Values.migration_settings.DATABASE_SSLKEY_PATH }}
+  DATABASE_SSLCERT: {{ .Values.migration_settings.DATABASE_SSLCERT_PATH }}
+  DATABASE_SSLROOTCERT: {{ .Values.migration_settings.DATABASE_SSLROOTCERT_PATH }}
+  {{- end }}
+
+  AUTH_VERIFY_SSL: '{{ .Values.parsing_settings.AUTH_VERIFY_SSL }}'
+
+  LOG_LEVEL: '{{ .Values.parsing_settings.LOG_LEVEL }}'
+  DOCUMENTATION_ENABLED: '{{ .Values.parsing_settings.DOCUMENTATION_ENABLED }}'
+
+  KAFKA_GROUP_ID: '{{ .Values.parsing_settings.KAFKA_GROUP_ID }}'
+  KAFKA_AUTO_OFFSET_RESET: '{{ .Values.parsing_settings.KAFKA_AUTO_OFFSET_RESET }}'
+
+  FILE_STORAGE_URL: '{{ .Values.parsing_settings.FILE_STORAGE_URL }}'
+  UNIFIER_URL: '{{ .Values.parsing_settings.UNIFIER_URL }}'
+  OCR_URL: '{{ .Values.parsing_settings.OCR_URL }}'
+  TABLES_URL: '{{ .Values.parsing_settings.TABLES_URL }}'
+  DOCUMENT_URL: '{{ .Values.parsing_settings.DOCUMENT_URL }}'
+  AI_FUSION_URL: '{{ .Values.parsing_settings.AI_FUSION_URL }}'
+  FILE_URL: '{{ .Values.parsing_settings.FILE_URL }}'
+
+  OBJECT_STORAGE_MODE: '{{ .Values.parsing_settings.OBJECT_STORAGE_MODE }}'
+  OBJECT_STORAGE_TYPE: '{{ .Values.parsing_settings.OBJECT_STORAGE_TYPE }}'
+
+  AZURE_PARSING_STRATEGY: '{{ .Values.parsing_settings.AZURE_PARSING_STRATEGY }}'
+
+  MERGED_TABLES_SIMILARITY_THRESHOLD: '{{ .Values.parsing_settings.MERGED_TABLES_SIMILARITY_THRESHOLD }}'
+  MERGED_TABLES_WEIGHTS: '{{ .Values.parsing_settings.MERGED_TABLES_WEIGHTS }}'
+  MERGE_TABLES_ENABLED: '{{ .Values.parsing_settings.MERGE_TABLES_ENABLED }}'
+
+  {{ if .Values.parsing_settings.RABBITMQ_TLS_ENABLED }}
+  RABBITMQ_TLS_HOST: '{{ .Values.parsing_settings.RABBITMQ_TLS_HOST }}'
+  RABBITMQ_TLS_PORT: '{{ .Values.parsing_settings.RABBITMQ_TLS_PORT }}'
+  RABBITMQ_TLS_USER: '{{ .Values.parsing_settings.RABBITMQ_TLS_USER }}'
+  RABBITMQ_TLS_VHOST: '{{ .Values.parsing_settings.RABBITMQ_TLS_VHOST }}'
+  RABBITMQ_TLS_SUBJECT: '{{ .Values.parsing_settings.RABBITMQ_TLS_SUBJECT }}'
+  RABBITMQ_TLS_CA_CERT: '{{ .Values.parsing_settings.RABBITMQ_TLS_CA_CERT }}'
+  RABBITMQ_TLS_CLIENT_CERT: '{{ .Values.parsing_settings.RABBITMQ_TLS_CLIENT_CERT }}'
+  RABBITMQ_TLS_CLIENT_KEY: '{{ .Values.parsing_settings.RABBITMQ_TLS_CLIENT_KEY }}'
+  {{ end }}
+
+  {{ if .Values.parsing_settings.KAFKA_SECURITY_ENABLED }}
+  KAFKA_SASL_MECHANISM: '{{ .Values.parsing_settings.KAFKA_SASL_MECHANISM }}'
+  KAFKA_SECURITY_PROTOCOL: '{{ .Values.parsing_settings.KAFKA_SECURITY_PROTOCOL }}'
+  {{ end }}
+  {{ if .Values.parsing_settings.message_broker_asb_without_manage_permission }}
+  ASB_SUBSCRIPTION_STRATEGY: '{{ .Values.parsing_settings.ASB_SUBSCRIPTION_STRATEGY }}'
+  {{ end }}
+  ASB_TOPIC_NAME: '{{ .Values.parsing_settings.ASB_TOPIC_NAME }}'
+
+  # Telemetry
+  INSTRUMENTATION_ENABLED: '{{ .Values.parsing_settings.INSTRUMENTATION_ENABLED }}'
+  SERVICE_NAME: '{{ .Values.parsing_settings.SERVICE_NAME }}'
+  EXPORTER_TYPE: '{{ .Values.parsing_settings.EXPORTER_TYPE }}'
+
+  AWS_TEXTRACT_PARSING_STRATEGY: '{{ .Values.parsing_settings.AWS_TEXTRACT_PARSING_STRATEGY }}'
+  AWS_TEXTRACT_PARALLELISM_FACTOR: '{{ .Values.parsing_settings.AWS_TEXTRACT_PARALLELISM_FACTOR }}'
+
+  GCP_DOCAI_PARSING_STRATEGY: '{{ .Values.parsing_settings.GCP_DOCAI_PARSING_STRATEGY }}'
+  GCP_DOCAI_OUTPUT_DIRECTORY_PATH: '{{ .Values.parsing_settings.GCP_DOCAI_OUTPUT_DIRECTORY_PATH }}'
+  GCP_DOCAI_PROJECT_ID: '{{ .Values.parsing_settings.GCP_DOCAI_PROJECT_ID }}'
+  GCP_DOCAI_LOCATION: '{{ .Values.parsing_settings.GCP_DOCAI_LOCATION }}'
+  GCP_DOCAI_FORM_RECOGNITION_PROCESSOR_ID: '{{ .Values.parsing_settings.GCP_DOCAI_FORM_RECOGNITION_PROCESSOR_ID }}'
+  GCP_DOCAI_IDP_TOKEN_URL: '{{ .Values.parsing_settings.GCP_DOCAI_IDP_TOKEN_URL }}'
+  GCP_DOCAI_IDP_CLIENT_ID: '{{ .Values.parsing_settings.GCP_DOCAI_IDP_CLIENT_ID }}'
+
+  GCP_BLOB_STORAGE_BUCKET_NAME: '{{ .Values.parsing_settings.GCP_BLOB_STORAGE_BUCKET_NAME }}'
+
+  S3_ENDPOINT_URL: '{{ .Values.parsing_settings.S3_ENDPOINT_URL }}'
+  S3_BUCKET_NAME: '{{ .Values.parsing_settings.S3_BUCKET_NAME }}'
+
+  IMG_ANNOTATION_LLM: '{{ .Values.parsing_settings.IMG_ANNOTATION_LLM }}'
+  IMG_ANNOTATION_DESCRIPTION_PROMPT: '{{ .Values.parsing_settings.IMG_ANNOTATION_DESCRIPTION_PROMPT }}'
+  IMG_ANNOTATION_TITLE_PROMPT: '{{ .Values.parsing_settings.IMG_ANNOTATION_TITLE_PROMPT }}'
+  IMG_ANNOTATION_CUSTOM_INSTRUCTIONS: '{{ .Values.parsing_settings.IMG_ANNOTATION_CUSTOM_INSTRUCTIONS }}'
+  IMG_ANNOTATION_GROUPING_FACTOR: '{{ .Values.parsing_settings.IMG_ANNOTATION_GROUPING_FACTOR }}'
+  IMG_ANNOTATION_PARALLELISM_FACTOR: '{{ .Values.parsing_settings.IMG_ANNOTATION_PARALLELISM_FACTOR }}'
+
+  IMG_ANNOTATION_WIDTH_PIXELS_THRESHOLD: '{{ .Values.parsing_settings.IMG_ANNOTATION_WIDTH_PIXELS_THRESHOLD }}'
+  IMG_ANNOTATION_HEIGHT_PIXELS_THRESHOLD: '{{ .Values.parsing_settings.IMG_ANNOTATION_HEIGHT_PIXELS_THRESHOLD }}'
+  IMG_ANNOTATION_SIZE_BYTES_THRESHOLD: '{{ .Values.parsing_settings.IMG_ANNOTATION_SIZE_BYTES_THRESHOLD }}'

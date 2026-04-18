@@ -1,0 +1,1574 @@
+{
+  "documentLayoutId": "40975",
+  "parsingFeatures": {
+    "AZURE_FORM_RECOGNIZER": [
+      "kvps",
+      "tables",
+      "text"
+    ]
+  },
+  "pages": [
+    {
+      "id": "9ffabbd5350649d8b69c3ec999cf7fd5",
+      "pageNumber": 1,
+      "parsingType": "AZURE_FORM_RECOGNIZER",
+      "dimension": {
+        "width": 2550,
+        "height": 3301,
+        "unit": "pixel"
+      },
+      "languages": [],
+      "filePath": "e363c461ec084709ab431c5ca63fc0f8/original/0.png",
+      "transformations": {
+        "thresholding": null,
+        "blurring": null,
+        "grayscaling": false,
+        "orientation": null,
+        "angle": null
+      },
+      "images": [],
+      "paragraphs": [],
+      "tables": [
+        {
+          "id": "53b35c132272496e917bf0b5d6742944",
+          "order": 0,
+          "confidence": null,
+          "columnCount": 2,
+          "rowCount": 6,
+          "polygon": [
+            {
+              "x": 0.24313725490196078,
+              "y": 0.2096334444107846
+            },
+            {
+              "x": 0.7552941176470588,
+              "y": 0.2096334444107846
+            },
+            {
+              "x": 0.7552941176470588,
+              "y": 0.39230536201151167
+            },
+            {
+              "x": 0.24274509803921568,
+              "y": 0.3920024235080279
+            }
+          ],
+          "cells": [
+            {
+              "content": "Theory",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "columnHeader",
+              "polygon": [
+                {
+                  "x": 0.24274509803921568,
+                  "y": 0.21235989094213875
+                },
+                {
+                  "x": 0.4023529411764706,
+                  "y": 0.21296576794910632
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.24274509803921568,
+                  "y": 0.23871554074522872
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Description",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "columnHeader",
+              "polygon": [
+                {
+                  "x": 0.4023529411764706,
+                  "y": 0.21296576794910632
+                },
+                {
+                  "x": 0.755686274509804,
+                  "y": 0.21235989094213875
+                },
+                {
+                  "x": 0.756078431372549,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.23871554074522872
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Context effects",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.24274509803921568,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.2729475916388973
+                },
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.2729475916388973
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Additional irrelevant (inferior) items in an item set significantly influence the selection behavior.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.756078431372549,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.756078431372549,
+                  "y": 0.2729475916388973
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.2729475916388973
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Primacy/recency effects",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.2729475916388973
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.2729475916388973
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.31384428960920935
+                },
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.31384428960920935
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Items at the beginning and the end of a list are analyzed significantly more often than items in the middle of a list.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.2729475916388973
+                },
+                {
+                  "x": 0.756078431372549,
+                  "y": 0.2729475916388973
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.31384428960920935
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.31384428960920935
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Framing effects",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 3,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.31384428960920935
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.31384428960920935
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.34232050893668586
+                },
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.34232050893668586
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "The way in which different decision alternatives are presented influences the final decision taken.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 3,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.31384428960920935
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.31384428960920935
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.34262344744016965
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.34232050893668586
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Priming",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 4,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.34232050893668586
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.34232050893668586
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.369887912753711
+                },
+                {
+                  "x": 0.2415686274509804,
+                  "y": 0.369887912753711
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "If specific decision properties are made more available in memory, this influences a consumer's item evaluations.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 4,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.34232050893668586
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.34262344744016965
+                },
+                {
+                  "x": 0.7572549019607843,
+                  "y": 0.3701908512571948
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.369887912753711
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Defaults",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 5,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.2415686274509804,
+                  "y": 0.369887912753711
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.369887912753711
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.38806422296273857
+                },
+                {
+                  "x": 0.2415686274509804,
+                  "y": 0.38806422296273857
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Preset options bias the decision process.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 5,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.369887912753711
+                },
+                {
+                  "x": 0.7572549019607843,
+                  "y": 0.3701908512571948
+                },
+                {
+                  "x": 0.7572549019607843,
+                  "y": 0.38867009996970614
+                },
+                {
+                  "x": 0.4019607843137255,
+                  "y": 0.38806422296273857
+                }
+              ],
+              "paragraphId": null
+            }
+          ]
+        },
+        {
+          "id": "9597f85d1e6d4897bf41eeca6cf36e09",
+          "order": 1,
+          "confidence": null,
+          "columnCount": 2,
+          "rowCount": 8,
+          "polygon": [
+            {
+              "x": 0.24235294117647058,
+              "y": 0.598000605877007
+            },
+            {
+              "x": 0.7545098039215686,
+              "y": 0.5983035443804907
+            },
+            {
+              "x": 0.7545098039215686,
+              "y": 0.8367161466222357
+            },
+            {
+              "x": 0.24235294117647058,
+              "y": 0.8364132081187519
+            }
+          ],
+          "cells": [
+            {
+              "content": "Theory",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "columnHeader",
+              "polygon": [
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.6016358679188125
+                },
+                {
+                  "x": 0.4066666666666667,
+                  "y": 0.6016358679188125
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6279915177219024
+                },
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.6279915177219024
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Description",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "columnHeader",
+              "polygon": [
+                {
+                  "x": 0.4066666666666667,
+                  "y": 0.6016358679188125
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.6016358679188125
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.6273856407149349
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6279915177219024
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Internal vs. external LOC",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.6279915177219024
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6279915177219024
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6758558012723417
+                },
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.6758558012723417
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Externally influenced users need more guidance; internally controlled users want to actively and selectively search for additional information.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6279915177219024
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.6273856407149349
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.6758558012723417
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6758558012723417
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Need for closure",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.24235294117647058,
+                  "y": 0.6758558012723417
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6758558012723417
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.7034232050893668
+                },
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.7034232050893668
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Describes the individual pursuit of making a decision as soon as possible",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.6758558012723417
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.6758558012723417
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.7037261435928507
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.7034232050893668
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Maximizer vs. satisficer",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 3,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.7034232050893668
+                },
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.7034232050893668
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.730990608906392
+                },
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.730990608906392
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Maximizers try to find an optimal solution; satisficers search for solutions that fulfill their basic requirements.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 3,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.40627450980392155,
+                  "y": 0.7034232050893668
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.7037261435928507
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.7312935474098758
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.730990608906392
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Conformity",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 4,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.730990608906392
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.730990608906392
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.7597697667373523
+                },
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.7588609512269009
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "A person's behavior, attitudes, and beliefs are influenced by other people.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 4,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.730990608906392
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.7312935474098758
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.7597697667373523
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.7597697667373523
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Trust",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 5,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.7588609512269009
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.7597697667373523
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.786428355043926
+                },
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.786428355043926
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "A person's behavioral intention is related to factors such as the willingness to buy.",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 5,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.7597697667373523
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.7597697667373523
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.786428355043926
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.786428355043926
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Emotions",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 6,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.2419607843137255,
+                  "y": 0.786428355043926
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.786428355043926
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.8149045743714026
+                },
+                {
+                  "x": 0.2411764705882353,
+                  "y": 0.814298697364435
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Mental states triggered by an event of importance for a person",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 6,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.786428355043926
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.786428355043926
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.8149045743714026
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.8149045743714026
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Persuasion",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 7,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.2411764705882353,
+                  "y": 0.814298697364435
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.8149045743714026
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.833383823083914
+                },
+                {
+                  "x": 0.2411764705882353,
+                  "y": 0.833383823083914
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "Changing attitudes or behaviors",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 7,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.8149045743714026
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.8149045743714026
+                },
+                {
+                  "x": 0.7564705882352941,
+                  "y": 0.833383823083914
+                },
+                {
+                  "x": 0.4054901960784314,
+                  "y": 0.833383823083914
+                }
+              ],
+              "paragraphId": null
+            }
+          ]
+        }
+      ],
+      "keyValuePairs": [],
+      "groups": []
+    },
+    {
+      "id": "999b3f857a0448f39a076b447a025b6e",
+      "pageNumber": 2,
+      "parsingType": "AZURE_FORM_RECOGNIZER",
+      "dimension": {
+        "width": 2550,
+        "height": 3301,
+        "unit": "pixel"
+      },
+      "languages": [],
+      "filePath": "e363c461ec084709ab431c5ca63fc0f8/original/1.png",
+      "transformations": {
+        "thresholding": null,
+        "blurring": null,
+        "grayscaling": false,
+        "orientation": null,
+        "angle": null
+      },
+      "images": [],
+      "paragraphs": [],
+      "tables": [
+        {
+          "id": "f234d887d8f54afeae907dafde90b5d2",
+          "order": 0,
+          "confidence": null,
+          "columnCount": 4,
+          "rowCount": 3,
+          "polygon": [
+            {
+              "x": 0.33647058823529413,
+              "y": 0.2102393214177522
+            },
+            {
+              "x": 0.6615686274509804,
+              "y": 0.21054225992123599
+            },
+            {
+              "x": 0.6615686274509804,
+              "y": 0.2802181157225083
+            },
+            {
+              "x": 0.33647058823529413,
+              "y": 0.27991517721902454
+            }
+          ],
+          "cells": [
+            {
+              "content": "Product",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.21296576794910632
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.21296576794910632
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.2390184792487125
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "A",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.21296576794910632
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.21296576794910632
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.23841260224174493
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.23871554074522872
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "B",
+              "columnIndex": 2,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.21296576794910632
+                },
+                {
+                  "x": 0.5992156862745098,
+                  "y": 0.21266282944562254
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.23841260224174493
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.23841260224174493
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "D",
+              "columnIndex": 3,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5992156862745098,
+                  "y": 0.21266282944562254
+                },
+                {
+                  "x": 0.6588235294117647,
+                  "y": 0.21266282944562254
+                },
+                {
+                  "x": 0.6588235294117647,
+                  "y": 0.23810966373826115
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.23841260224174493
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "price per month",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.2390184792487125
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.2590124204786428
+                },
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.25931535898212665
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "30",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.23871554074522872
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.23841260224174493
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.2590124204786428
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "20",
+              "columnIndex": 2,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.23841260224174493
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.23841260224174493
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.25870948197515903
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "35",
+              "columnIndex": 3,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.23841260224174493
+                },
+                {
+                  "x": 0.6588235294117647,
+                  "y": 0.23810966373826115
+                },
+                {
+                  "x": 0.6588235294117647,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.25870948197515903
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "download limit",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.25931535898212665
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.2590124204786428
+                },
+                {
+                  "x": 0.45215686274509803,
+                  "y": 0.2774916691911542
+                },
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.277794607694638
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "10GB",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.2590124204786428
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.2771887306876704
+                },
+                {
+                  "x": 0.45215686274509803,
+                  "y": 0.2774916691911542
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "6GB",
+              "columnIndex": 2,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.2771887306876704
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.2771887306876704
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "9GB",
+              "columnIndex": 3,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.6588235294117647,
+                  "y": 0.25870948197515903
+                },
+                {
+                  "x": 0.6584313725490196,
+                  "y": 0.27688579218418663
+                },
+                {
+                  "x": 0.5996078431372549,
+                  "y": 0.2771887306876704
+                }
+              ],
+              "paragraphId": null
+            }
+          ]
+        },
+        {
+          "id": "5afff64c07404fd3be7a74bda9db7aab",
+          "order": 1,
+          "confidence": null,
+          "columnCount": 4,
+          "rowCount": 3,
+          "polygon": [
+            {
+              "x": 0.3368627450980392,
+              "y": 0.763102090275674
+            },
+            {
+              "x": 0.6611764705882353,
+              "y": 0.7634050287791578
+            },
+            {
+              "x": 0.6611764705882353,
+              "y": 0.8358073311117843
+            },
+            {
+              "x": 0.33647058823529413,
+              "y": 0.8355043926083006
+            }
+          ],
+          "cells": [
+            {
+              "content": "Product",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.7679491063314148
+                },
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.7679491063314148
+                },
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.794001817631021
+                },
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.7943047561345047
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "A",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.7679491063314148
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.7679491063314148
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.7936988791275371
+                },
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.794001817631021
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "B",
+              "columnIndex": 2,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.7679491063314148
+                },
+                {
+                  "x": 0.5980392156862745,
+                  "y": 0.7676461678279309
+                },
+                {
+                  "x": 0.5980392156862745,
+                  "y": 0.7936988791275371
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.7936988791275371
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "D",
+              "columnIndex": 3,
+              "columnSpan": 1,
+              "rowIndex": 0,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5980392156862745,
+                  "y": 0.7676461678279309
+                },
+                {
+                  "x": 0.6603921568627451,
+                  "y": 0.7676461678279309
+                },
+                {
+                  "x": 0.6603921568627451,
+                  "y": 0.7933959406240533
+                },
+                {
+                  "x": 0.5980392156862745,
+                  "y": 0.7936988791275371
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "price per month",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.7943047561345047
+                },
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.794001817631021
+                },
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.814298697364435
+                },
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.814298697364435
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "30",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.794001817631021
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.7936988791275371
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.8139957588609512
+                },
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.814298697364435
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "25",
+              "columnIndex": 2,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.7936988791275371
+                },
+                {
+                  "x": 0.5980392156862745,
+                  "y": 0.7936988791275371
+                },
+                {
+                  "x": 0.5984313725490196,
+                  "y": 0.8136928203574675
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.8139957588609512
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "50",
+              "columnIndex": 3,
+              "columnSpan": 1,
+              "rowIndex": 1,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5980392156862745,
+                  "y": 0.7936988791275371
+                },
+                {
+                  "x": 0.6603921568627451,
+                  "y": 0.7933959406240533
+                },
+                {
+                  "x": 0.6603921568627451,
+                  "y": 0.8136928203574675
+                },
+                {
+                  "x": 0.5984313725490196,
+                  "y": 0.8136928203574675
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "download limit",
+              "columnIndex": 0,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.814298697364435
+                },
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.814298697364435
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.8327779460769463
+                },
+                {
+                  "x": 0.3352941176470588,
+                  "y": 0.8330808845804302
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "10GB",
+              "columnIndex": 1,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.4513725490196078,
+                  "y": 0.814298697364435
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.8139957588609512
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.8327779460769463
+                },
+                {
+                  "x": 0.45176470588235296,
+                  "y": 0.8327779460769463
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "3GB",
+              "columnIndex": 2,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.8139957588609512
+                },
+                {
+                  "x": 0.5984313725490196,
+                  "y": 0.8136928203574675
+                },
+                {
+                  "x": 0.5984313725490196,
+                  "y": 0.8324750075734626
+                },
+                {
+                  "x": 0.5258823529411765,
+                  "y": 0.8327779460769463
+                }
+              ],
+              "paragraphId": null
+            },
+            {
+              "content": "12GB",
+              "columnIndex": 3,
+              "columnSpan": 1,
+              "rowIndex": 2,
+              "rowSpan": 1,
+              "kind": "content",
+              "polygon": [
+                {
+                  "x": 0.5984313725490196,
+                  "y": 0.8136928203574675
+                },
+                {
+                  "x": 0.6603921568627451,
+                  "y": 0.8136928203574675
+                },
+                {
+                  "x": 0.6603921568627451,
+                  "y": 0.8324750075734626
+                },
+                {
+                  "x": 0.5984313725490196,
+                  "y": 0.8324750075734626
+                }
+              ],
+              "paragraphId": null
+            }
+          ]
+        }
+      ],
+      "keyValuePairs": [],
+      "groups": []
+    }
+  ]
+}

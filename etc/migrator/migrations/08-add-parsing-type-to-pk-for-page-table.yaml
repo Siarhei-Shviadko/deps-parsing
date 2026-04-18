@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Raman Salauyou
+      changes:
+        - dropPrimaryKey:
+            tableName: page
+            constraintName: page_id
+        - addPrimaryKey:
+            tableName: page
+            columnNames: id, parsing_type
+            constraintName: page_id_parsing_type_pk
+
+      rollback:
+        - dropPrimaryKey:
+            tableName: page
+            constraintName: page_id_parsing_type_pk
+        - addPrimaryKey:
+            tableName: page
+            columnNames: id
+            constraintName: page_id

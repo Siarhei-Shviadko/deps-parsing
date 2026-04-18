@@ -1,0 +1,39 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Siarhei Shviadko
+    changes:
+    - createTable:
+        tableName: document_type
+        columns:
+        - column:
+            constraints:
+                primaryKey: true
+                primaryKeyName: document_type_id
+            name: id
+            type: VARCHAR(150)
+        - column:
+            constraints:
+                nullable: false
+            name: tenant_id
+            type: VARCHAR(150)
+        - column:
+            name: command_channel
+            type: VARCHAR(250)
+    rollback:
+    - dropTable:
+        tableName: document_type
+
+- changeSet:
+    id: 2
+    author: Siarhei Shveadko
+    changes:
+    - addUniqueConstraint:
+        columnNames: id, tenant_id
+        constraintName: unique__document_type_id__tenant_id
+        tableName: document_type
+
+    rollback:
+    - dropUniqueConstraint:
+        constraintName: unique__document_type_id__tenant_id
+        tableName: document_type

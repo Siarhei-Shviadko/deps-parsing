@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  api:
+    image: "parsing-dev"
+    container_name: "deps-parsing"
+    command: python -m deps_parsing serve
+
+  consumer:
+    image: "parsing-dev"
+    container_name: "deps-parsing-consumer"
+    command: python -m deps_parsing dispatch
+
+  migrator:
+    image: "parsing-migrator"
+    container_name: deps-parsing-migrator

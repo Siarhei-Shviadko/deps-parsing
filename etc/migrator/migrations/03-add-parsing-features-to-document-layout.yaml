@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Raman Salauyou
+      changes:
+        - addColumn:
+            tableName: document_layout
+            columns:
+              - column:
+                  name: parsing_features
+                  type: JSONB
+                  constraints:
+                    nullable: false
+
+      rollback:
+        - dropColumn:
+            columnName: parsing_features
+            tableName: document_layout

@@ -1,0 +1,79 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Siarhei Shveadko
+    changes:
+      - addColumn:
+          tableName: tabular_layout__cell
+          columns:
+            - column:
+                name: tabular_layout_id
+                type: VARCHAR(150)
+                constraints:
+                  nullable: true
+    rollback:
+    - dropColumn:
+        tableName: tabular_layout__cell
+        columnName: tabular_layout_id
+
+- changeSet:
+    id: 2
+    author: Siarhei Shveadko
+    changes:
+    - sql:
+          sql: |
+            DELETE
+            FROM tabular_layout__cell
+            WHERE tabular_layout__cell.tabular_layout_id IS NULL;
+
+- changeSet:
+    id: 3
+    author: Siarhei Shveadko
+    changes:
+      - modifyDataType:
+          tableName: tabular_layout__cell
+          columnName: tabular_layout_id
+          newDataType: VARCHAR(150)
+      - addNotNullConstraint:
+          tableName: tabular_layout__cell
+          columnName: tabular_layout_id
+          columnDataType: VARCHAR(150)
+
+- changeSet:
+    id: 4
+    author: Siarhei Shveadko
+    changes:
+    - dropIndex:
+        tableName: tabular_layout__cell
+        indexName: idx__tl_cell_relative_position
+
+    - createIndex:
+        tableName: tabular_layout__cell
+        columns:
+        - column:
+            name: tabular_layout_id
+        - column:
+            name: table_id
+        - column:
+            name: relative_position_row
+        - column:
+            name: relative_position_column
+        indexName: idx_tl_table_cell_position
+        unique: true
+
+    rollback:
+    - dropIndex:
+        tableName: tabular_layout__cell
+        indexName: idx_tl_table_cell_position
+
+    - createIndex:
+        tableName: tabular_layout__cell
+        columns:
+        - column:
+            name: table_id
+        - column:
+            name: relative_position_row
+        - column:
+            name: relative_position_column
+        indexName: idx__tl_cell_relative_position
+        unique: true

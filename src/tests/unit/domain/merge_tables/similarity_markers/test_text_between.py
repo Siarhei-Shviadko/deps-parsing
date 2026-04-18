@@ -1,0 +1,24 @@
+import pytest
+
+from deps_parsing.domain.services.split_tables_detection.similarity_markers import (
+    TextBetweenMarker,
+)
+
+
+@pytest.mark.parametrize(
+    "layout_fixture_name, expected",
+    [
+        ("dl__headers__indexing__column_count", True),
+        ("dl__headers__indexing__crap_tables", True),
+        ("dl__columns_alignment_only", False),
+        ("dl__has_text_between__but_all_markers", True),
+        ("dl__random_tables", False),
+    ],
+)
+def test_text_between(layout_fixture_name, expected, request):
+    layout = request.getfixturevalue(layout_fixture_name)
+
+    first_page = layout.pages[0]
+    second_page = layout.pages[1]
+
+    assert TextBetweenMarker().is_present(first_page, second_page) == expected

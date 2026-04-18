@@ -1,0 +1,121 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_key_value_pair_table
+      author: Raman Salauyou
+      changes:
+        - createTable:
+            tableName: key_value_pair
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(150)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: key_value_pair_pk
+              - column:
+                  name: order_num
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: key
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: value
+                  type: JSONB
+              - column:
+                  name: confidence
+                  type: FLOAT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: page_id
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parsing_type
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: key_value_pair_page_fk
+            baseTableName: key_value_pair
+            baseColumnNames: page_id, parsing_type
+            referencedTableName: page
+            referencedColumnNames: id, parsing_type
+            onDelete: CASCADE
+
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: key_value_pair
+            constraintName: key_value_pair_page_fk
+
+        - dropTable:
+            tableName: key_value_pair
+
+  - changeSet:
+      id: migrate_key_value_pair_data_without_timeout
+      author: Raman Salauyou
+      runOnChange: true
+      runInTransaction: true
+      changes:
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              INSERT INTO key_value_pair (id, order_num, key, value, confidence, page_id, parsing_type)
+              SELECT
+                kvp->>'id' as id,
+                (kvp->>'order')::integer as order_num,
+                (kvp->'key')::jsonb as key,
+                (kvp->'value')::jsonb as value,
+                (kvp->>'confidence')::float as confidence,
+                page.id as page_id,
+                page.parsing_type as parsing_type
+              FROM page, jsonb_array_elements(key_value_pairs) as kvp;
+
+              RESET statement_timeout;
+
+        - dropColumn:
+            tableName: page
+            columnName: key_value_pairs
+
+      rollback:
+        - addColumn:
+            tableName: page
+            columns:
+              - column:
+                  name: key_value_pairs
+                  type: JSONB
+                  defaultValue: '[]'
+                  constraints:
+                    nullable: false
+
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              UPDATE page
+              SET key_value_pairs = COALESCE(
+              (
+                SELECT jsonb_agg(
+                  jsonb_build_object(
+                    'id', kvp.id,
+                    'order', kvp.order_num,
+                    'key', kvp.key,
+                    'value', kvp.value,
+                    'confidence', kvp.confidence
+                  )
+                )
+                FROM key_value_pair kvp
+                WHERE kvp.page_id = page.id AND kvp.parsing_type = page.parsing_type
+              ),
+              '[]'::jsonb
+              );
+
+              RESET statement_timeout;

@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_table
+      author: Raman Salauyou
+      changes:
+        - createTable:
+            tableName: table_
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(150)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: table_pk
+              - column:
+                  name: order_num
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: column_count
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: row_count
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: polygon
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: confidence
+                  type: FLOAT
+              - column:
+                  name: cells
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: page_id
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parsing_type
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: table_page_fk
+            baseTableName: table_
+            baseColumnNames: page_id, parsing_type
+            referencedTableName: page
+            referencedColumnNames: id, parsing_type
+            onDelete: CASCADE
+
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: table_
+            constraintName: table_page_fk
+
+        - dropTable:
+            tableName: table_
+
+  - changeSet:
+      id: migrate_tables_data_without_timeout
+      author: Raman Salauyou
+      runOnChange: true
+      runInTransaction: true
+      changes:
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              INSERT INTO table_ (id, order_num, column_count, row_count, polygon, confidence, cells, page_id, parsing_type)
+              SELECT
+                t->>'id' as id,
+                (t->>'order')::integer as order_num,
+                (t->>'column_count')::integer as column_count,
+                (t->>'row_count')::integer as row_count,
+                (t->'polygon')::jsonb as polygon,
+                (t->>'confidence')::float as confidence,
+                (t->'cells')::jsonb as cells,
+                page.id as page_id,
+                page.parsing_type as parsing_type
+              FROM page, jsonb_array_elements(tables) as t;
+
+              RESET statement_timeout;
+
+        - dropColumn:
+            tableName: page
+            columnName: tables
+
+      rollback:
+        - addColumn:
+            tableName: page
+            columns:
+              - column:
+                  name: tables
+                  type: JSONB
+                  defaultValue: '[]'
+                  constraints:
+                    nullable: false
+
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              UPDATE page
+              SET tables = COALESCE(
+              (
+                SELECT jsonb_agg(
+                  jsonb_build_object(
+                    'id', t.id,
+                    'order', t.order_num,
+                    'column_count', t.column_count,
+                    'row_count', t.row_count,
+                    'polygon', t.polygon,
+                    'confidence', t.confidence,
+                    'cells', t.cells
+                  )
+                )
+                FROM table_ t
+                WHERE t.page_id = page.id AND t.parsing_type = page.parsing_type
+              ),
+              '[]'::jsonb
+              );
+
+              RESET statement_timeout;

@@ -1,0 +1,133 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_paragraph_table
+      author: Raman Salauyou
+      changes:
+        - createTable:
+            tableName: paragraph
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(150)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: paragraph_pk
+              - column:
+                  name: order_num
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: confidence
+                  type: FLOAT
+              - column:
+                  name: role
+                  type: VARCHAR(150)
+              - column:
+                  name: polygon
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lines
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: page_id
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parsing_type
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: paragraph_page_fk
+            baseTableName: paragraph
+            baseColumnNames: page_id, parsing_type
+            referencedTableName: page
+            referencedColumnNames: id, parsing_type
+            onDelete: CASCADE
+
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: paragraph
+            constraintName: paragraph_page_fk
+
+        - dropTable:
+            tableName: paragraph
+
+  - changeSet:
+      id: migrate_paragraph_data_without_timeout
+      author: Raman Salauyou
+      runOnChange: true
+      runInTransaction: true
+      changes:
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              INSERT INTO paragraph (id, order_num, content, confidence, role, polygon, lines, page_id, parsing_type)
+              SELECT
+                para->>'id' as id,
+                (para->>'order')::integer as order_num,
+                para->>'content' as content,
+                (para->>'confidence')::float as confidence,
+                para->>'role' as role,
+                (para->'polygon')::jsonb as polygon,
+                (para->'lines')::jsonb as lines,
+                page.id as page_id,
+                page.parsing_type as parsing_type
+              FROM page, jsonb_array_elements(paragraphs) as para;
+
+              RESET statement_timeout;
+
+        - dropColumn:
+            tableName: page
+            columnName: paragraphs
+
+      rollback:
+        - addColumn:
+            tableName: page
+            columns:
+              - column:
+                  name: paragraphs
+                  type: JSONB
+                  constraints:
+                    nullable: false
+                  defaultValue: '[]'
+
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              UPDATE page
+              SET paragraphs = COALESCE(
+              (
+                SELECT jsonb_agg(
+                  jsonb_build_object(
+                    'id', p.id,
+                    'order', p.order_num,
+                    'content', p.content,
+                    'confidence', p.confidence,
+                    'role', p.role,
+                    'polygon', p.polygon,
+                    'lines', p.lines
+                  )
+                )
+                FROM paragraph p
+                WHERE p.page_id = page.id AND p.parsing_type = page.parsing_type
+              ),
+              '[]'::jsonb
+              );
+
+              RESET statement_timeout;

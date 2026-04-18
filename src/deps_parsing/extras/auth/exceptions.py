@@ -1,0 +1,2 @@
+class DepsAuthError(Exception):
+    pass

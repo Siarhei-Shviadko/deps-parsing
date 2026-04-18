@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Illia Makarov
+      changes:
+        - addColumn:
+            tableName: document_layout
+            columns:
+              - column:
+                  name: merged_tables
+                  type: JSONB
+
+      rollback:
+        - dropColumn:
+            columnName: merged_tables
+            tableName: document_layout

@@ -1,0 +1,126 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_image_table
+      author: Raman Salauyou
+      changes:
+        - createTable:
+            tableName: image
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(150)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: image_pk
+              - column:
+                  name: order_num
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR
+              - column:
+                  name: file_path
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: polygon
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: page_id
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parsing_type
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: image
+            baseColumnNames: page_id, parsing_type
+            referencedTableName: page
+            referencedColumnNames: id, parsing_type
+            constraintName: image_page_fk
+            onDelete: CASCADE
+
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: image
+            constraintName: image_page_fk
+
+        - dropTable:
+            tableName: image
+
+  - changeSet:
+      id: migrate_table_data_without_timeout
+      author: Raman Salauyou
+      runOnChange: true
+      runInTransaction: true
+      changes:
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              INSERT INTO image (id, order_num, title, file_path, polygon, description, page_id, parsing_type)
+              SELECT
+                img->>'id' as id,
+                (img->>'order')::INTEGER as order_num,
+                img->>'title' as title,
+                img->>'file_path' as file_path,
+                (img->>'polygon')::jsonb as polygon,
+                img->>'description' as description,
+                page.id as page_id,
+                page.parsing_type as parsing_type
+              FROM page, jsonb_array_elements(page.images) as img;
+
+              RESET statement_timeout;
+
+        - dropColumn:
+            tableName: page
+            columnName: images
+
+      rollback:
+        - addColumn:
+            tableName: page
+            columns:
+              - column:
+                  name: images
+                  type: JSONB
+                  defaultValue: '[]'
+                  constraints:
+                    nullable: false
+
+        - sql:
+            sql: |
+              SET statement_timeout = 0;
+
+              UPDATE page
+              SET images = COALESCE(
+              (
+                SELECT jsonb_agg(
+                  jsonb_build_object(
+                    'id', image.id,
+                    'order', image.order_num,
+                    'title', image.title,
+                    'file_path', image.file_path,
+                    'polygon', image.polygon,
+                    'description', image.description
+                  )
+                )
+                FROM image
+                WHERE image.page_id = page.id AND image.parsing_type = page.parsing_type
+              ),
+              '[]'::jsonb
+              );
+
+              RESET statement_timeout;
