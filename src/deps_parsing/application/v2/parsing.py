@@ -15,8 +15,10 @@ from deps_parsing.messaging.commands import ParseDocument
 
 from ..entity_id import EntityId
 from ..parsing_type import LayoutTypeReference, ParsingType
+from ..semantic_parsing_type import SemanticParsingType
 from .document_layout import DocumentLayoutService
 from .i_can_parse_document import ICanParseDocument
+from .semantic_layout import SemanticLayoutApplication
 from .tabular_layout import TabularLayoutService
 
 __all__ = ["ParsingService"]
@@ -30,6 +32,7 @@ class ParsingService:
         command_producer: CommandProducer,
         dl_service: DocumentLayoutService,
         tl_service: TabularLayoutService,
+        semantic_service: SemanticLayoutApplication,
         default_ocr_engine: str,
     ) -> None:
         self._storage = storage
@@ -37,6 +40,7 @@ class ParsingService:
         self._command_producer = command_producer
         self._dl_service = dl_service
         self._tl_service = tl_service
+        self._semantic_service = semantic_service
         self._default_ocr_engine = default_ocr_engine
 
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -46,6 +50,7 @@ class ParsingService:
         return {
             DLParsingType: self._dl_service,
             TLParsingType: self._tl_service,
+            SemanticParsingType: self._semantic_service,
         }
 
     def perform_parsing(
@@ -70,9 +75,10 @@ class ParsingService:
                 extra_headers=routing_info,
             )
 
+        extension = Path(file_path).suffix.lstrip(".")
         parsing_type = self._determine_parsing_type(
-            extension=Path(file_path).suffix.lstrip("."),
-            engine=engine or self._default_ocr_engine,
+            extension=extension,
+            engine=engine,
         )
 
         return self.parsing_applications_map[parsing_type.layout_type].parse(
@@ -82,16 +88,30 @@ class ParsingService:
             parsing_type=parsing_type.value,
             features=features,
             language=language,
+            routing_info=routing_info,
         )
 
-    def _determine_parsing_type(self, extension: str, engine: str) -> ParsingType:
+    def _determine_parsing_type(self, extension: str, engine: Optional[str]) -> ParsingType:
+        if self._is_semantic_engine(engine):
+            return ParsingType(engine)  # type: ignore[arg-type]
+
         if ParsingType.supports(extension):
             return ParsingType(extension)
-        elif ParsingType.supports(engine):
-            return ParsingType(engine)
 
-        self._logger.error("Can't determine ParsingType for file: %s, engine: %s.", extension, engine)
+        resolved_engine = engine or self._default_ocr_engine
+        if ParsingType.supports(resolved_engine):
+            return ParsingType(resolved_engine)
+
+        self._logger.error("Can't determine ParsingType for file extension: %s, engine: %s.", extension, engine)
         raise UnsupportedParsingType("Can't determine ParsingType")
+
+    @staticmethod
+    def _is_semantic_engine(engine: Optional[str]) -> bool:
+        if engine is None:
+            return False
+        if not ParsingType.supports(engine):
+            return False
+        return ParsingType(engine).layout_type == SemanticParsingType
 
     def _get_command_channel(self, document_type_id: Optional[str], tenant_id: str) -> Optional[str]:
         if document_type_id is not None and (  # noqa: WPS337

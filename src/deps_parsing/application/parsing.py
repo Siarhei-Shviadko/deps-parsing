@@ -1,4 +1,6 @@
 import logging
+from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from typing import Any, Optional
 
 from deps_document_layout.model import ParsingFeature
@@ -17,6 +19,7 @@ from .document_layout import DocumentLayoutService
 from .entity_id import EntityId
 from .i_can_parse_document import ICanParseDocument
 from .parsing_type import LayoutTypeReference, ParsingType
+from .semantic_layout import SemanticLayoutService
 from .tabular_layout import TabularLayoutService
 
 __all__ = ["ParsingService"]
@@ -30,6 +33,7 @@ class ParsingService:
         command_producer: CommandProducer,
         dl_service: DocumentLayoutService,
         tl_service: TabularLayoutService,
+        semantic_layout_service: SemanticLayoutService,
         default_ocr_engine: str,
     ) -> None:
         self._document_proxy = document_proxy
@@ -37,6 +41,7 @@ class ParsingService:
         self._command_producer = command_producer
         self._dl_service = dl_service
         self._tl_service = tl_service
+        self._semantic_layout_service = semantic_layout_service
         self._default_ocr_engine = default_ocr_engine
 
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -84,9 +89,21 @@ class ParsingService:
         )
 
     def get_parsing_info(self, document_id: str, tenant_id: str) -> ParsingInfo:
-        dl_info = self._dl_service.layout_info_for(document_id, tenant_id)
-        tl_info = self._tl_service.layout_info_for(document_id, tenant_id)
-        return ParsingInfo(layout_id=document_id, document_layout_info=dl_info, tabular_layout_info=tl_info)
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            f_dl = executor.submit(copy_context().run, self._dl_service.layout_info_for, document_id, tenant_id)
+            f_tl = executor.submit(copy_context().run, self._tl_service.layout_info_for, document_id, tenant_id)
+            f_sem = executor.submit(
+                copy_context().run,
+                self._semantic_layout_service.layout_info_for,
+                document_id,
+                tenant_id,
+            )
+        return ParsingInfo(
+            layout_id=document_id,
+            document_layout_info=f_dl.result(),
+            tabular_layout_info=f_tl.result(),
+            semantic_layout_info=f_sem.result(),
+        )
 
     def delete_layout(self, document_id: str, tenant_id: str) -> None:
         self._dl_service.delete_document_layout(document_id, tenant_id)

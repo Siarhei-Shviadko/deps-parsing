@@ -6,15 +6,6 @@ from deps_parsing.infrastructure.exceptions import FileProxyRequestError
 from deps_parsing.infrastructure.proxies import FileProxy
 
 
-@pytest.fixture
-def file_proxy():
-    return FileProxy(
-        base_url="http://file-service:8000",
-        timeout=60,
-        ssl_verify=False,
-    )
-
-
 class TestFileProxy:
     def test_get_file_content_success(self, file_proxy):
         with patch.object(file_proxy, "_session") as mock_session:
@@ -27,16 +18,16 @@ class TestFileProxy:
 
             assert result == b"file content"
             mock_session.get.assert_called_once_with(
-                url="http://file-service:8000/api/file/v1/files/file-123/content",
-                timeout=60,
-                verify=False,
+                url=f"{file_proxy._base_url}/api/file/v1/files/file-123/content",
+                timeout=file_proxy._timeout,
+                verify=file_proxy._verify,
             )
 
     def test_get_file_content_failure(self, file_proxy):
         with patch.object(file_proxy, "_session") as mock_session:
             mock_response = Mock()
             mock_response.ok = False
-            mock_response.url = "http://file-service:8000/api/file/v1/files/file-123/content"
+            mock_response.url = f"{file_proxy._base_url}/api/file/v1/files/file-123/content"
             mock_response.content = b"404 Not Found"
             mock_session.get.return_value = mock_response
 

@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Any, Optional
 
 from deps_document_layout.model import (
     DocumentLayout,
@@ -55,6 +55,7 @@ class DocumentLayoutService(ICanParseDocument[ParsingFeature, ParsingType, Entit
         parsing_type: ParsingType,
         features: Optional[set[ParsingFeature]] = None,
         language: Optional[str] = None,
+        routing_info: Optional[dict[str, Any]] = None,
     ) -> EntityId:
         document_layout = self._find_or_create_document_layout(
             document_layout_id=entity_id,

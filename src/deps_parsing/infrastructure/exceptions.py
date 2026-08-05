@@ -10,6 +10,7 @@ __all__ = [
     "ParsingCsvError",
     "AIFusionProxyRequestError",
     "PageCountMismatchError",
+    "SemanticParsingProxyRequestError",
 ]
 
 
@@ -46,4 +47,8 @@ class ParsingCsvError(BusinessException):
 
 
 class PageCountMismatchError(ParsingException):
+    pass
+
+
+class SemanticParsingProxyRequestError(ParsingException):
     pass

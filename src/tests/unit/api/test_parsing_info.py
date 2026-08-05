@@ -13,6 +13,7 @@ def test_get_parsing_info__no_layouts__ok(client, document_layout_id, tabular_la
     assert response.status_code == HTTPStatus.OK
     assert json_response["documentLayoutInfo"] is None
     assert json_response["tabularLayoutInfo"] is None
+    assert json_response["semanticLayoutInfo"] is None
 
 
 @pytest.mark.parsing_info
@@ -58,6 +59,31 @@ def test_get_parsing_info__only_tl__ok(
                 tabular_layout_info["sheets"][ind]["images"][image_ind]
                 == test_saved_full_tabular_layout.sheets[ind].images[image_ind].id()
             )
+
+
+@pytest.mark.parsing_info
+def test_get_parsing_info__with_semantic_layout__ok(
+    client,
+    semantic_layout_service_mock,
+    semantic_layout_info,
+    tabular_layout_service__with_mocked_excel_parser,
+    document_layout_id,
+    tenant_id,
+):
+    semantic_layout_service_mock.layout_info_for.return_value = {"llamaindex": semantic_layout_info}
+
+    response = client.get(f"{V2_API_PREFIX}/documents/{document_layout_id}/parsing-info")
+    json_response = response.json()
+
+    assert response.status_code == HTTPStatus.OK
+    assert len(json_response["semanticLayoutInfo"]) == 1
+    assert json_response["semanticLayoutInfo"]["llamaindex"]["id"] == semantic_layout_info.id
+    assert json_response["semanticLayoutInfo"]["llamaindex"]["provider"] == semantic_layout_info.provider
+    assert (
+        json_response["semanticLayoutInfo"]["llamaindex"]["metadata"]["sourceProvider"]
+        == semantic_layout_info.metadata.source_provider
+    )
+    semantic_layout_service_mock.layout_info_for.assert_called_once_with(document_layout_id, tenant_id)
 
 
 @pytest.mark.parsing_info

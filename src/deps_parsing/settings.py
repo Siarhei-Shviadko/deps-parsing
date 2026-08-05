@@ -92,6 +92,13 @@ class FileProxySettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="FILE_")
 
 
+class SemanticParsingProxySettings(BaseSettings):
+    url: str
+    proxy_timeout: int = 60
+
+    model_config = SettingsConfigDict(env_prefix="SEMANTIC_PARSING_")
+
+
 class Settings(BaseSettings):
     env: str = "development"
     version: str = "1.0"
@@ -106,6 +113,7 @@ class Settings(BaseSettings):
     tables: TablesProxySettings = TablesProxySettings()
     document: DocumentProxySettings = DocumentProxySettings()
     file: FileProxySettings = FileProxySettings()
+    semantic_parsing: SemanticParsingProxySettings = SemanticParsingProxySettings()
     ai_fusion: AIFusionProxySettings = AIFusionProxySettings()
 
     messaging_driver: MessagingDriverEnum = Field(MessagingDriverEnum.RABBITMQ, validation_alias="MESSAGING_DRIVER")

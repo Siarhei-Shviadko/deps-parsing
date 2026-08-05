@@ -274,6 +274,7 @@ def test_perform_parsing__document_type_not_provided__get_command_channel_called
 @pytest.mark.parsing_info
 def test_get_parsing_info__ok(
     document_layout_service_mock,
+    semantic_layout_service_mock,
     document_layout,
     tabular_layout_service__with_mocked_excel_parser,
     saved_test_tabular_layout,
@@ -282,16 +283,19 @@ def test_get_parsing_info__ok(
     document_layout_id,
 ):
     document_layout_service_mock.layout_info_for.return_value = document_layout
+    semantic_layout_service_mock.layout_info_for.return_value = None
     parsing_info = parsing_service.get_parsing_info(document_id=document_layout_id, tenant_id=tenant_id)
 
     assert parsing_info.layout_id == document_layout_id
     assert parsing_info.document_layout_info == document_layout
     assert parsing_info.tabular_layout_info is not None
+    assert parsing_info.semantic_layout_info is None
 
 
 @pytest.mark.parsing_info
 def test_get_parsing_info__only_dl__ok(
     document_layout_service_mock,
+    semantic_layout_service_mock,
     tabular_layout_service__with_mocked_excel_parser,
     document_layout,
     parsing_service,
@@ -309,6 +313,7 @@ def test_get_parsing_info__only_dl__ok(
 @pytest.mark.parsing_info
 def test_get_parsing_info__only_tl__ok(
     document_layout_service_mock,
+    semantic_layout_service_mock,
     tabular_layout_service__with_mocked_excel_parser,
     fake_tl_query_repository,
     test_tabular_layout,
@@ -329,6 +334,7 @@ def test_get_parsing_info__only_tl__ok(
 @pytest.mark.parsing_info
 def test_get_parsing_info__not_tl__not_dl__ok(
     document_layout_service_mock,
+    semantic_layout_service_mock,
     tabular_layout_service__with_mocked_excel_parser,
     parsing_service,
     tenant_id,
