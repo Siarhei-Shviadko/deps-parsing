@@ -1,4 +1,4 @@
-from typing import Optional, Protocol, TypeVar
+from typing import Any, Optional, Protocol, TypeVar
 
 __all__ = ["ICanParseDocument"]
 
@@ -17,5 +17,6 @@ class ICanParseDocument(Protocol[FeatureType, ParsingType, EntityId]):
         parsing_type: ParsingType,
         features: Optional[set[FeatureType]] = None,
         language: Optional[str] = None,
+        routing_info: Optional[dict[str, Any]] = None,
     ) -> EntityId:
         pass

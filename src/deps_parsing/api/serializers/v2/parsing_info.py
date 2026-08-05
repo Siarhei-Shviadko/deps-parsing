@@ -6,6 +6,7 @@ from deps_parsing.domain.dtos import ParsingInfo
 
 from ..base import ConfiguredBaseModel
 from .document_layout import SerializedDocumentLayoutInfo
+from .semantic_layout_info import SerializedSemanticLayoutInfo
 from .tabular_layout import SerializerTabularLayoutInfo
 
 __all__ = ["SerializedParsingInfo"]
@@ -15,6 +16,7 @@ class SerializedParsingInfo(ConfiguredBaseModel):
     layout_id: str = Field(..., alias="layoutId")
     document_layout_info: Optional[SerializedDocumentLayoutInfo] = Field(..., alias="documentLayoutInfo")
     tabular_layout_info: Optional[SerializerTabularLayoutInfo] = Field(..., alias="tabularLayoutInfo")
+    semantic_layout_info: Optional[dict[str, SerializedSemanticLayoutInfo]] = Field(None, alias="semanticLayoutInfo")
 
     @classmethod
     def from_model(cls, info: ParsingInfo) -> "SerializedParsingInfo":
@@ -27,5 +29,13 @@ class SerializedParsingInfo(ConfiguredBaseModel):
             ),
             tabular_layout_info=(
                 SerializerTabularLayoutInfo.from_model(info.tabular_layout_info) if info.tabular_layout_info else None
+            ),
+            semantic_layout_info=(
+                {
+                    provider: SerializedSemanticLayoutInfo.from_model(sl)
+                    for provider, sl in info.semantic_layout_info.items()
+                }
+                if info.semantic_layout_info
+                else None
             ),
         )

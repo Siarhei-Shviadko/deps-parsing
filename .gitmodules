@@ -1,18 +1,18 @@
-[submodule "vendors/deps-pipelines"]
-	path = vendors/deps-pipelines
-	url = git@github.com:epam/deps-pipelines.git
-[submodule "vendors/deps-observability-instrumentation"]
-	path = vendors/deps-observability-instrumentation
-	url = git@github.com:epam/deps-observability-instrumentation.git
-[submodule "vendors/deps-tabular-layout"]
-	path = vendors/deps-tabular-layout
-	url = git@github.com:epam/deps-tabular-layout.git
-[submodule "vendors/deps-object-storage"]
-	path = vendors/deps-object-storage
-	url = git@github.com:epam/deps-object-storage.git
-[submodule "vendors/deps-message-flow"]
-	path = vendors/deps-message-flow
-	url = git@github.com:epam/deps-message-flow.git
 [submodule "vendors/deps-document-layout"]
 	path = vendors/deps-document-layout
-	url = git@github.com:epam/deps-document-layout.git
+	url = git@github.com:Siarhei-Shviadko/deps-document-layout.git
+[submodule "vendors/deps-pipelines"]
+	path = vendors/deps-pipelines
+	url = git@github.com:Siarhei-Shviadko/deps-pipelines.git
+[submodule "vendors/deps-observability-instrumentation"]
+	path = vendors/deps-observability-instrumentation
+	url = git@github.com:Siarhei-Shviadko/deps-observability-instrumentation.git
+[submodule "vendors/deps-tabular-layout"]
+	path = vendors/deps-tabular-layout
+	url = git@github.com:Siarhei-Shviadko/deps-tabular-layout.git
+[submodule "vendors/deps-object-storage"]
+	path = vendors/deps-object-storage
+	url = git@github.com:Siarhei-Shviadko/deps-object-storage.git
+[submodule "vendors/deps-message-flow"]
+	path = vendors/deps-message-flow
+	url = git@github.com:Siarhei-Shviadko/deps-message-flow.git

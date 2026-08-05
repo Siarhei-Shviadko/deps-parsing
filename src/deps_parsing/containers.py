@@ -24,11 +24,13 @@ from deps_parsing.application import (
     DocumentLayoutService,
     DocumentTypeService,
     ParsingService,
+    SemanticLayoutService,
     TabularLayoutService,
 )
 from deps_parsing.application.v2 import (
     DocumentLayoutServiceV2,
     ParsingServiceV2,
+    SemanticLayoutApplicationV2,
     TabularLayoutServiceV2,
 )
 from deps_parsing.constants import PROJECT_NAME
@@ -81,6 +83,7 @@ from deps_parsing.infrastructure.proxies import (
     DocumentProxy,
     FileProxy,
     OCRProxy,
+    SemanticParsingProxy,
     TablesProxy,
     UnifierProxy,
 )
@@ -285,6 +288,12 @@ class ExternalServices(containers.DeclarativeContainer):
         AIFusionProxy,
         base_url=config.ai_fusion.url,
         timeout=config.ai_fusion.proxy_timeout,
+        ssl_verify=config.ssl_verify,
+    )
+    semantic_parsing: providers.Provider[SemanticParsingProxy] = providers.Singleton(
+        SemanticParsingProxy,
+        base_url=config.semantic_parsing.url,
+        timeout=config.semantic_parsing.proxy_timeout,
         ssl_verify=config.ssl_verify,
     )
 
@@ -646,6 +655,11 @@ class Applications(containers.DeclarativeContainer):
         command_producer=command_producer,
     )
 
+    semantic_layout_service: providers.Singleton[SemanticLayoutService] = providers.Singleton(
+        SemanticLayoutService,
+        semantic_parsing_proxy=external_services.semantic_parsing,
+    )
+
     parsing_service: providers.Singleton[ParsingService] = providers.Singleton(
         ParsingService,
         document_proxy=external_services.document,
@@ -653,7 +667,13 @@ class Applications(containers.DeclarativeContainer):
         command_producer=command_producer,
         dl_service=document_layout_service,
         tl_service=tabular_layout_service,
+        semantic_layout_service=semantic_layout_service,
         default_ocr_engine=config.default_ocr_engine,
+    )
+
+    semantic_layout_application_v2: providers.Singleton[SemanticLayoutApplicationV2] = providers.Singleton(
+        SemanticLayoutApplicationV2,
+        command_producer=command_producer,
     )
 
     parsing_service_v2: providers.Singleton[ParsingServiceV2] = providers.Singleton(
@@ -663,6 +683,7 @@ class Applications(containers.DeclarativeContainer):
         command_producer=command_producer,
         dl_service=document_layout_service_v2,
         tl_service=tabular_layout_service_v2,
+        semantic_service=semantic_layout_application_v2,
         default_ocr_engine=config.default_ocr_engine,
     )
 

@@ -5,6 +5,7 @@ from .document import *
 from .file import *
 from .google import *
 from .ocr import *
+from .semantic_parsing import *
 from .tables import *
 from .unifier import *
 
@@ -18,4 +19,5 @@ __all__ = (
     + file.__all__
     + google.__all__
     + ai_fusion.__all__
+    + semantic_parsing.__all__
 )

@@ -5,6 +5,7 @@ from deps_document_layout.model import ParsingType as DLParsingType
 from deps_tabular_layout.models import ParsingType as TLParsingType
 
 from deps_parsing.application import ParsingType
+from deps_parsing.application.semantic_parsing_type import SemanticParsingType
 from deps_parsing.domain.exceptions import UnsupportedParsingType
 
 
@@ -37,6 +38,23 @@ def test_parsing_type__dl_or_tl_type__ok(raw_type: str, target: Union[TLParsingT
 def test_parsing_type__extra_type__ok(extra_extension: str, expected_type: TLParsingType):
     assert ParsingType.supports(extra_extension)
     assert ParsingType(extra_extension).value == expected_type
+
+
+@pytest.mark.parametrize(
+    "raw_type",
+    [
+        "LLAMAINDEX",
+        "llamaindex",
+        SemanticParsingType.LLAMAINDEX.value,
+    ],
+)
+def test_parsing_type__semantic_type__ok(raw_type: str):
+    assert ParsingType.supports(raw_type)
+
+    parsing_type = ParsingType(raw_type)
+
+    assert parsing_type.value == SemanticParsingType.LLAMAINDEX
+    assert parsing_type.layout_type == SemanticParsingType
 
 
 def test_parsing_type__unknown_type__error():

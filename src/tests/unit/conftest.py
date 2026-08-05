@@ -15,15 +15,21 @@ from deps_parsing.application import (
     DocumentLayoutService,
     DocumentTypeService,
     ParsingService,
+    SemanticLayoutService,
     TabularLayoutService,
 )
+from deps_parsing.domain.dtos import SemanticLayoutInfo
 from deps_parsing.infrastructure.dl_parsing import (
     AzureOCREngine,
     OCRLayoutImageProcessingService,
 )
+from deps_parsing.infrastructure.proxies.semantic_layout_info_mapper import (
+    SemanticLayoutInfoMapper,
+)
 from deps_parsing.infrastructure.tl_parsing import ExcelParser
 from deps_parsing.messaging.events import FileDeleted
 from tests.data.document_layout import document_layout as full_document_layout
+from tests.data.semantic_layout_info import semantic_layout_info_payload
 from tests.data.tabular_layout import tabular_layout as full_tabular_layout
 from tests.fakes import (
     FakeCellCommandRepository,
@@ -168,6 +174,30 @@ def parsing_service(containers) -> ParsingService:
 def document_layout_service_mock(containers, mocker):
     mock = mocker.Mock(containers.applications.document_layout_service.cls)
     with containers.applications.document_layout_service.override(mock):
+        yield mock
+
+
+@pytest.fixture
+def semantic_parsing_proxy_mock(external_services, mocker):
+    mock = mocker.Mock(external_services.semantic_parsing.cls)
+    with external_services.semantic_parsing.override(mock):
+        yield mock
+
+
+@pytest.fixture
+def semantic_layout_service(semantic_parsing_proxy_mock, containers) -> SemanticLayoutService:
+    return containers.applications.semantic_layout_service()
+
+
+@pytest.fixture
+def semantic_layout_info() -> SemanticLayoutInfo:
+    return SemanticLayoutInfoMapper.from_dict(semantic_layout_info_payload, layout_id="document-123")
+
+
+@pytest.fixture
+def semantic_layout_service_mock(containers, mocker):
+    mock = mocker.Mock(containers.applications.semantic_layout_service.cls)
+    with containers.applications.semantic_layout_service.override(mock):
         yield mock
 
 

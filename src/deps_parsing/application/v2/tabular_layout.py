@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Any, Optional
 
 from deps_message_flow.events.publisher import DomainEventPublisher
 from deps_tabular_layout.models import (
@@ -48,6 +48,7 @@ class TabularLayoutService(ICanParseDocument[str, ParsingType, EntityId]):
         parsing_type: ParsingType,
         features: Optional[set[str]] = None,
         language: Optional[str] = None,
+        routing_info: Optional[dict[str, Any]] = None,
     ) -> EntityId:
         layout = TabularLayoutFactory.make_empty_layout(
             document_id=entity_id,
