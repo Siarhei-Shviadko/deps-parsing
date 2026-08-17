@@ -25,12 +25,14 @@ from deps_parsing.application import (
     DocumentTypeService,
     ParsingService,
     SemanticLayoutService,
+    StubSemanticLayoutService,
     TabularLayoutService,
 )
 from deps_parsing.application.v2 import (
     DocumentLayoutServiceV2,
     ParsingServiceV2,
     SemanticLayoutApplicationV2,
+    StubSemanticLayoutApplicationV2,
     TabularLayoutServiceV2,
 )
 from deps_parsing.constants import PROJECT_NAME
@@ -655,9 +657,13 @@ class Applications(containers.DeclarativeContainer):
         command_producer=command_producer,
     )
 
-    semantic_layout_service: providers.Singleton[SemanticLayoutService] = providers.Singleton(
-        SemanticLayoutService,
-        semantic_parsing_proxy=external_services.semantic_parsing,
+    semantic_layout_service = providers.Selector(
+        providers.Callable(str.lower, providers.Callable(str, config.semantic_layout_enabled)),
+        true=providers.Singleton(StubSemanticLayoutService),
+        false=providers.Singleton(
+            SemanticLayoutService,
+            semantic_parsing_proxy=external_services.semantic_parsing,
+        ),
     )
 
     parsing_service: providers.Singleton[ParsingService] = providers.Singleton(
@@ -671,9 +677,10 @@ class Applications(containers.DeclarativeContainer):
         default_ocr_engine=config.default_ocr_engine,
     )
 
-    semantic_layout_application_v2: providers.Singleton[SemanticLayoutApplicationV2] = providers.Singleton(
-        SemanticLayoutApplicationV2,
-        command_producer=command_producer,
+    semantic_layout_application_v2 = providers.Selector(
+        providers.Callable(str.lower, providers.Callable(str, config.semantic_layout_enabled)),
+        true=providers.Singleton(StubSemanticLayoutApplicationV2),
+        false=providers.Singleton(SemanticLayoutApplicationV2, command_producer=command_producer),
     )
 
     parsing_service_v2: providers.Singleton[ParsingServiceV2] = providers.Singleton(

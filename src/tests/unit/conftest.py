@@ -196,7 +196,7 @@ def semantic_layout_info() -> SemanticLayoutInfo:
 
 @pytest.fixture
 def semantic_layout_service_mock(containers, mocker):
-    mock = mocker.Mock(containers.applications.semantic_layout_service.cls)
+    mock = mocker.Mock(SemanticLayoutService)
     with containers.applications.semantic_layout_service.override(mock):
         yield mock
 

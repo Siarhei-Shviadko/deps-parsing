@@ -1,12 +1,12 @@
-from typing import cast
+from collections.abc import Sequence
 
-from deps_document_layout.model import PageBuilder
+from deps_document_layout.model import PageBuilder, ParagraphBuilder
 
 from .base_page_element import PageElementParser
 from .generic_text import GenericTextDataParser
 from .line import LineDataParser
 from .signature import SignatureDataParser
-from .types import AWSLine, AWSParagraph, AWSSignature
+from .types import AWSLayout, AWSLine, AWSParagraph, AWSSignature, ChildType
 
 __all__ = ["ParagraphDataParser"]
 
@@ -28,8 +28,13 @@ class ParagraphDataParser(PageElementParser):
             .with_polygon(paragraph.polygon)
         )
 
-        for child in paragraph.children:
-            parser = elements_parser_map.get(type(child), GenericTextDataParser)
-            builder = parser(self._response).add_element(builder, child)
+        return self._add_children(builder, paragraph.children)
 
-        return cast(PageBuilder, builder)
+    def _add_children(self, builder: ParagraphBuilder, children: Sequence[ChildType]) -> ParagraphBuilder:
+        for child in children:
+            if isinstance(child, AWSLayout):
+                builder = self._add_children(builder, child.children)
+            else:
+                parser = elements_parser_map.get(type(child), GenericTextDataParser)
+                builder = parser(self._response).add_element(builder, child)
+        return builder

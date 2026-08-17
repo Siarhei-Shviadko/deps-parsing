@@ -47,8 +47,9 @@ class DocumentAIDocumentParsingService(DocumentOCRBasedParsingService[DocAIDocum
             document=document,
             file=file,
         )
-        self._init_google_storage()
         self._output_directory = output_directory
+        self._gcp_object_storage: ObjectStorage | None = None
+        self.object_storage_settings: Settings | None = None
 
     def parse(
         self,
@@ -156,6 +157,9 @@ class DocumentAIDocumentParsingService(DocumentOCRBasedParsingService[DocAIDocum
 
     @contextmanager
     def _gcp_blob_name(self, document_id: str) -> Generator[str, None, None]:
+        if self.object_storage_settings is None:
+            self._init_google_storage()
+
         document_detail = self._document.get_brief_document_info(document_id)
 
         uploaded = False

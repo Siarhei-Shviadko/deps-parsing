@@ -1,11 +1,12 @@
 import pytest
 
+from deps_parsing.application.v2 import SemanticLayoutApplicationV2
 from deps_parsing.application.v2.parsing import ParsingService
 
 
 @pytest.fixture
 def semantic_layout_application_v2_mock(containers, mocker):
-    mock = mocker.Mock(containers.applications.semantic_layout_application_v2.cls)
+    mock = mocker.Mock(SemanticLayoutApplicationV2)
     with containers.applications.semantic_layout_application_v2.override(mock):
         yield mock
 
