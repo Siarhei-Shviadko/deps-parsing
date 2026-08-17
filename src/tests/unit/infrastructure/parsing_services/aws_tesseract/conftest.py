@@ -46,6 +46,11 @@ def page_with_checkbox_inside_table_cell_dict():
 
 
 @pytest.fixture
+def page_with_nested_layout_list_dict():
+    return parse_file("tests/data/aws_textract/page_with_nested_layout_list.json")
+
+
+@pytest.fixture
 def page1_aws_document(page1_dict):
     return response_parser.parse(page1_dict)
 
@@ -63,6 +68,11 @@ def page_with_image_aws_document(page_with_image_dict):
 @pytest.fixture
 def page_with_checkbox_inside_table_cell_aws_document(page_with_checkbox_inside_table_cell_dict):
     return response_parser.parse(page_with_checkbox_inside_table_cell_dict)
+
+
+@pytest.fixture
+def page_with_nested_layout_list_aws_document(page_with_nested_layout_list_dict):
+    return response_parser.parse(page_with_nested_layout_list_dict)
 
 
 @pytest.fixture
@@ -148,6 +158,17 @@ def page_with_checkbox_inside_table_cell_parser(
 ):
     return AwsTextractParser(
         aws_page=page_with_checkbox_inside_table_cell_aws_document.page(0),
+        image=unified_data_image_page1,
+        parsed_page_images=[],
+    )
+
+
+@pytest.fixture
+def page_with_nested_layout_list_parser(
+    document_layout, page_with_nested_layout_list_aws_document, unified_data_image_page1
+):
+    return AwsTextractParser(
+        aws_page=page_with_nested_layout_list_aws_document.page(0),
         image=unified_data_image_page1,
         parsed_page_images=[],
     )

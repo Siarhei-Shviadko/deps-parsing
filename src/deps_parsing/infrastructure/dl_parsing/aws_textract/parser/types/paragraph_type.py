@@ -5,9 +5,9 @@ from textractor.entities.layout import Layout
 from textractor.entities.line import Line
 from textractor.entities.signature import Signature
 
-__all__ = ["AWSParagraph"]
+__all__ = ["AWSParagraph", "ChildType"]
 
-ChildType = Union[Line, Signature]
+ChildType = Union[Line, Signature, Layout]
 
 
 class AWSParagraph:

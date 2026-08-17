@@ -7,6 +7,7 @@ from .parsing import *
 from .parsing_type import *
 from .semantic_layout import *
 from .semantic_parsing_type import *
+from .stub_semantic_layout import *
 from .tabular_layout import *
 
 __all__ = (
@@ -19,4 +20,5 @@ __all__ = (
     + engine_registry.__all__
     + layout_type.__all__
     + semantic_parsing_type.__all__
+    + stub_semantic_layout.__all__
 )

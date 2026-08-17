@@ -13,11 +13,13 @@ from deps_parsing.domain.model import CheckmarkValue
 from deps_parsing.infrastructure.dl_parsing import (
     AWSCell,
     AWSKeyValuePair,
+    AWSLayout,
     AWSLine,
     AWSParagraph,
     AWSTable,
     AwsTextractParser,
     AWSWord,
+    ChildType,
 )
 
 
@@ -110,6 +112,42 @@ class TestAwsTextractParser:
         assert image.description == parsed_image.description
         assert image.polygon == parsed_image.page_coordinates
 
+    def test_add_paragraphs__nested_layout_children__every_line_has_words(
+        self, document_layout, page_with_nested_layout_list_parser
+    ):
+        page_builder = page_with_nested_layout_list_parser._add_page(document_layout)
+
+        page_with_paragraphs = page_with_nested_layout_list_parser._add_paragraphs(page_builder).build()
+
+        content_bearing_lines = [
+            line for paragraph in page_with_paragraphs.paragraphs for line in paragraph.lines if line.content.strip()
+        ]
+        assert content_bearing_lines
+        for line in content_bearing_lines:
+            assert line.words
+
+    def test_add_paragraphs__nested_layout_children__flattened_into_lines(
+        self, document_layout, page_with_nested_layout_list_parser
+    ):
+        parser = page_with_nested_layout_list_parser
+        input_paragraphs: list[AWSParagraph] = parser._response.paragraphs
+        nested_layout_paragraphs = [
+            paragraph
+            for paragraph in input_paragraphs
+            if any(isinstance(child, AWSLayout) for child in paragraph.children)
+        ]
+        assert nested_layout_paragraphs
+
+        page_builder = parser._add_page(document_layout)
+        page_with_paragraphs = parser._add_paragraphs(page_builder).build()
+
+        for paragraph, original_paragraph in zip(page_with_paragraphs.paragraphs, input_paragraphs):
+            if not any(isinstance(child, AWSLayout) for child in original_paragraph.children):
+                continue
+            flattened_lines = self._flatten_paragraph_children(original_paragraph.children)
+            assert len(paragraph.lines) == len(flattened_lines)
+            assert len(paragraph.lines) > len(original_paragraph.children)
+
     @staticmethod
     def _compare_pages(page: Page, unified_data_image_page1):
         assert isinstance(page, Page)
@@ -151,14 +189,25 @@ class TestAwsTextractParser:
         assert paragraph.content == input_paragraph.layout_object.text
         assert paragraph.confidence == input_paragraph.layout_object.confidence
 
-        assert len(paragraph.lines) == len(input_paragraph.children)
+        flattened_children = self._flatten_paragraph_children(input_paragraph.children)
+        assert len(paragraph.lines) == len(flattened_children)
 
-        for line, child in zip(paragraph.lines, input_paragraph.children):
+        for line, child in zip(paragraph.lines, flattened_children):
             assert line.content == child.text
             assert line.confidence == child.confidence
 
             for word, input_word in zip(line.words, child.words):
                 self._compare_words(word, input_word)
+
+    @classmethod
+    def _flatten_paragraph_children(cls, children: list[ChildType]) -> list[ChildType]:
+        flattened: list[ChildType] = []
+        for child in children:
+            if isinstance(child, AWSLayout):
+                flattened.extend(cls._flatten_paragraph_children(child.children))
+            else:
+                flattened.append(child)
+        return flattened
 
     def _compare_words(self, word: Word, input_word: AWSWord):
         assert word.content == input_word.text
