@@ -659,8 +659,8 @@ class Applications(containers.DeclarativeContainer):
 
     semantic_layout_service = providers.Selector(
         providers.Callable(str.lower, providers.Callable(str, config.semantic_layout_enabled)),
-        true=providers.Singleton(StubSemanticLayoutService),
-        false=providers.Singleton(
+        false=providers.Singleton(StubSemanticLayoutService),
+        true=providers.Singleton(
             SemanticLayoutService,
             semantic_parsing_proxy=external_services.semantic_parsing,
         ),
@@ -679,8 +679,8 @@ class Applications(containers.DeclarativeContainer):
 
     semantic_layout_application_v2 = providers.Selector(
         providers.Callable(str.lower, providers.Callable(str, config.semantic_layout_enabled)),
-        true=providers.Singleton(StubSemanticLayoutApplicationV2),
-        false=providers.Singleton(SemanticLayoutApplicationV2, command_producer=command_producer),
+        false=providers.Singleton(StubSemanticLayoutApplicationV2),
+        true=providers.Singleton(SemanticLayoutApplicationV2, command_producer=command_producer),
     )
 
     parsing_service_v2: providers.Singleton[ParsingServiceV2] = providers.Singleton(

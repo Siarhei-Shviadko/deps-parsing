@@ -122,7 +122,7 @@ class Settings(BaseSettings):
 
     documentation_enabled: bool = True
     instrumentation_enabled: bool = False
-    semantic_layout_enabled: bool = Field(default=False, validation_alias="SEMANTIC_LAYOUT_ENABLED")
+    semantic_layout_enabled: bool = Field(default=True, validation_alias="SEMANTIC_LAYOUT_ENABLED")
 
     raw_file_extension: str = "json"
 
