@@ -49,10 +49,10 @@ class DocumentLayoutRepository(IDocumentLayoutRepository):
         pages_query = self._query_factory.select_page_count_foreach_parsing_type(layout_id, tenant_id)
 
         with self._db.connection() as conn:
-            if not (layout_info_result := conn.execute(layout_query).first()):
+            if not (layout_info_result := conn.execute(layout_query).mappings().first()):
                 return None
 
-            pages_count_result = conn.execute(pages_query).fetchall()
+            pages_count_result = conn.execute(pages_query).mappings().fetchall()
 
         return DocumentLayoutMapper.layout_info_from_dict(
             raw_dl=layout_info_result,
@@ -63,7 +63,7 @@ class DocumentLayoutRepository(IDocumentLayoutRepository):
         query = self._query_factory.select_document_layout_info(layout_id, tenant_id)
 
         with self._db.connection() as conn:
-            result = conn.execute(query).fetchone()
+            result = conn.execute(query).mappings().fetchone()
 
         return DocumentLayoutMapper.from_dict(result) if result else None
 
@@ -75,12 +75,14 @@ class DocumentLayoutRepository(IDocumentLayoutRepository):
     ) -> Optional[DocumentLayout]:
         query = self._query_factory.select_document_layout_by(layout_id, tenant_id, filtering)
         with self._db.connection() as conn:
-            if row := conn.execute(query).fetchone():
+            if row := conn.execute(query).mappings().fetchone():
                 return DocumentLayoutMapper.from_dict(row)
 
     def is_layout_exists(self, layout_id: str, tenant_id: str) -> bool:
         with self._db.connection() as conn:
-            return bool(conn.execute(self._query_factory.select_document_layout_id(layout_id, tenant_id)).fetchone())
+            return bool(
+                conn.execute(self._query_factory.select_document_layout_id(layout_id, tenant_id)).mappings().fetchone(),
+            )
 
     def delete(self, document_layout: DocumentLayout) -> None:
         with self._db.connection() as conn:
@@ -98,25 +100,33 @@ class DocumentLayoutRepository(IDocumentLayoutRepository):
         filtering: DocumentLayoutFeaturesFilter,
     ) -> tuple[list[Page], int]:
         with self._db.connection() as conn:
-            rows = conn.execute(
-                self._query_factory.select_document_layout_by(
-                    layout_id=document_layout_id,
-                    tenant_id=tenant_id,
-                    filtering=filtering,
-                ),
-            ).fetchone()
+            rows = (
+                conn.execute(
+                    self._query_factory.select_document_layout_by(
+                        layout_id=document_layout_id,
+                        tenant_id=tenant_id,
+                        filtering=filtering,
+                    ),
+                )
+                .mappings()
+                .fetchone()
+            )
 
-            row = conn.execute(
-                self._query_factory.select_page_count_by_filtering(
-                    layout_id=document_layout_id,
-                    tenant_id=tenant_id,
-                    filtering=filtering,
-                ),
-            ).fetchone()
+            row = (
+                conn.execute(
+                    self._query_factory.select_page_count_by_filtering(
+                        layout_id=document_layout_id,
+                        tenant_id=tenant_id,
+                        filtering=filtering,
+                    ),
+                )
+                .mappings()
+                .fetchone()
+            )
 
         return (
             DocumentLayoutMapper.from_dict(rows).pages if rows else [],
-            row.page_amount,
+            row["page_amount"],
         )
 
     def partial_layout_of_id(
@@ -126,13 +136,17 @@ class DocumentLayoutRepository(IDocumentLayoutRepository):
         wish_list: LayoutWishList,
     ) -> Optional[DocumentLayout]:
         with self._db.connection() as conn:
-            row = conn.execute(
-                self._query_factory.select_partial_document_layout_by(
-                    layout_id=layout_id,
-                    tenant_id=tenant_id,
-                    wish_list=wish_list,
-                ),
-            ).fetchone()
+            row = (
+                conn.execute(
+                    self._query_factory.select_partial_document_layout_by(
+                        layout_id=layout_id,
+                        tenant_id=tenant_id,
+                        wish_list=wish_list,
+                    ),
+                )
+                .mappings()
+                .fetchone()
+            )
 
         if row:
             return DocumentLayoutMapper.from_dict(row)

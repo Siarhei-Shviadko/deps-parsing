@@ -22,7 +22,7 @@ class TabularLayoutQueryRepository(ITabularLayoutQueryRepository):
         query = self._query_factory.select_tabular_layout(layout_id=layout_id, tenant_id=tenant_id)
 
         with self._db.connection() as conn:
-            result = conn.execute(query).fetchone()
+            result = conn.execute(query).mappings().fetchone()
 
         return TabularLayoutMapper.tl_from_dict(result) if result else None
 
@@ -39,19 +39,19 @@ class TabularLayoutQueryRepository(ITabularLayoutQueryRepository):
         )
 
         with self._db.connection() as conn:
-            result = conn.execute(query).fetchone()
+            result = conn.execute(query).mappings().fetchone()
 
         return TabularLayoutMapper.tl_projection_from_dict(result) if result else None
 
     def layout_of_id_info(self, layout_id: str, tenant_id: str) -> Optional[TabularLayoutInfo]:
         query = self._query_factory.select_layout_info(layout_id=layout_id, tenant_id=tenant_id)
         with self._db.connection() as conn:
-            result = conn.execute(query).fetchone()
+            result = conn.execute(query).mappings().fetchone()
 
         return TabularLayoutInfoMapper.from_dict(result) if result else None
 
     def is_layout_exists(self, layout_id: str, tenant_id: str) -> bool:
         query = self._query_factory.select_layout_id(layout_id, tenant_id)
         with self._db.connection() as conn:
-            result = conn.execute(query).fetchone()
+            result = conn.execute(query).mappings().fetchone()
         return bool(result)

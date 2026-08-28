@@ -77,14 +77,12 @@ class DocumentLayoutQueryFactory:
     def select_tabular_layout(self, layout_id: str, tenant_id: str) -> Select:
         return (
             select(
-                [
-                    *self.tl_columns,
-                    func.json_agg(
-                        func.json_build_object(
-                            *(chain(*((str(col.name), col) for col in self.table_columns))),
-                        ),
-                    ).label("tables"),
-                ],
+                *self.tl_columns,
+                func.json_agg(
+                    func.json_build_object(
+                        *(chain(*((str(col.name), col) for col in self.table_columns))),
+                    ),
+                ).label("tables"),
             )
             .select_from(
                 self._tl_schema.outerjoin(
@@ -99,16 +97,14 @@ class DocumentLayoutQueryFactory:
     def select_layout_info(self, layout_id: str, tenant_id: str) -> Select:
         return (
             select(
-                [
-                    self.tl_id_column,
-                    self._tl_schema.c.parsing_type,
-                    self._tl_schema.c.sheets,
-                    func.json_agg(
-                        func.json_build_object(
-                            *(chain(*((str(col.name), col) for col in self.table_info_columns))),
-                        ),
-                    ).label("tables_info"),
-                ],
+                self.tl_id_column,
+                self._tl_schema.c.parsing_type,
+                self._tl_schema.c.sheets,
+                func.json_agg(
+                    func.json_build_object(
+                        *(chain(*((str(col.name), col) for col in self.table_info_columns))),
+                    ),
+                ).label("tables_info"),
             )
             .select_from(
                 self._tl_schema.outerjoin(
@@ -130,14 +126,12 @@ class DocumentLayoutQueryFactory:
 
         return (
             select(
-                self.tl_columns
-                + [
-                    func.json_agg(
-                        func.json_build_object(
-                            *(chain(*((str(col.name), col) for col in subquery.c))),
-                        ),
-                    ).label("tables"),
-                ],
+                *self.tl_columns,
+                func.json_agg(
+                    func.json_build_object(
+                        *(chain(*((str(col.name), col) for col in subquery.c))),
+                    ),
+                ).label("tables"),
             )
             .select_from(self._tl_schema.outerjoin(subquery, self.tl_id_column == subquery.c.tabular_layout_id))
             .where(and_(self.tl_id_column == layout_id, self.tenant_id_column == tenant_id))
@@ -145,7 +139,7 @@ class DocumentLayoutQueryFactory:
         )
 
     def select_layout_id(self, layout_id: str, tenant_id: str) -> Select:
-        return select([self.tl_id_column]).where(
+        return select(self.tl_id_column).where(
             and_(self.tl_id_column == layout_id, self.tenant_id_column == tenant_id),
         )
 
@@ -155,7 +149,7 @@ class DocumentLayoutQueryFactory:
         ).label("cells")
 
         subquery = (
-            select(self.table_columns + [cells_json_agg])
+            select(*self.table_columns, cells_json_agg)
             .select_from(
                 self._table_schema.outerjoin(
                     self._cell_schema,
@@ -173,7 +167,7 @@ class DocumentLayoutQueryFactory:
         filtering: TabularLayoutFilter,
     ) -> Select:
         if tables := filtering.tables:
-            query = query.where(self._table_schema.c.id.in_(tables))
+            query = query.where(self._table_schema.c.id.in_([tables] if isinstance(tables, str) else tables))
         if row_span := filtering.row_span:
             query = query.where(self._cell_schema.c.relative_position_row.between(*row_span))
         if col_span := filtering.col_span:
