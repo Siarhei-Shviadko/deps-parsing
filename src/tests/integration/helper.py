@@ -16,15 +16,15 @@ class TLQueryHelper:
 
     def load_all_cells(self) -> list[dict]:
         with self.database.connection() as conn:
-            stmt = select([cell_table])
-            return conn.execute(stmt).fetchall()
+            stmt = select(cell_table)
+            return conn.execute(stmt).mappings().fetchall()
 
     def load_all_tables(self) -> list[dict]:
         with self.database.connection() as conn:
-            stmt = select([tbl_table])
-            return conn.execute(stmt).fetchall()
+            stmt = select(tbl_table)
+            return conn.execute(stmt).mappings().fetchall()
 
     def load_all_tabular_layouts(self) -> list[dict]:
         with self.database.connection() as conn:
-            stmt = select([tabular_layout_table])
-            return conn.execute(stmt).fetchall()
+            stmt = select(tabular_layout_table)
+            return conn.execute(stmt).mappings().fetchall()

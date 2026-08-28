@@ -1,7 +1,7 @@
 from typing import Union
 
 from deps_message_flow.sagas.orchestration import SagaInstance, SerializedSagaData
-from sqlalchemy.engine.result import RowProxy
+from sqlalchemy.engine import Row
 
 __all__ = ["build_dict_from_saga_instance", "build_saga_instance_from_dict"]
 
@@ -20,7 +20,7 @@ def build_dict_from_saga_instance(saga_instance: SagaInstance) -> dict:
     }
 
 
-def build_saga_instance_from_dict(saga_dict: Union[dict, RowProxy]) -> SagaInstance:
+def build_saga_instance_from_dict(saga_dict: Union[dict, Row]) -> SagaInstance:
     return SagaInstance(
         saga_type=saga_dict["saga_type"],
         saga_id=saga_dict["saga_id"],

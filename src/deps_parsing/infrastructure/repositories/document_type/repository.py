@@ -18,18 +18,18 @@ class DocumentTypeRepository(IDocumentTypeRepository):
         self._schema = document_type_table
 
     def find_by_id_for_tenant(self, document_type_id: str, tenant_id: str) -> Optional[DocumentType]:
-        query = select([self._schema]).where(
+        query = select(self._schema).where(
             and_(self._schema.c.id == document_type_id, self._schema.c.tenant_id == tenant_id),
         )
 
         with self._db.connection() as conn:
-            if rows := conn.execute(query).fetchone():
+            if rows := conn.execute(query).mappings().fetchone():
                 return DocumentTypeMapper.from_dict(rows)
 
     def find_by_id(self, document_type_id: str) -> Optional[DocumentType]:
-        query = select([self._schema]).where(self._schema.c.id == document_type_id)
+        query = select(self._schema).where(self._schema.c.id == document_type_id)
         with self._db.connection() as conn:
-            if row := conn.execute(query).fetchone():
+            if row := conn.execute(query).mappings().fetchone():
                 return DocumentTypeMapper.from_dict(row)
 
     def save(self, document_type: DocumentType) -> None:

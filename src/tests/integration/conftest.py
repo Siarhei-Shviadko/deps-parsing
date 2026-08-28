@@ -25,26 +25,26 @@ from .helper import TLQueryHelper
 
 
 @pytest.fixture(autouse=True)
-def session(containers):
+def session(containers, mocker):
     database = containers.datasources.postgres_datasource()
-    connection = database.get_connection()
+    connection = database.engine.connect()
 
-    class TrapForThreadLocalConnections:
-        """
-        This class is used instead of threading.local in Database, for allowing connection transactions management
-        """
+    class _PinnedRegistry:
+        pass
 
-        connection = None
+    _PinnedRegistry.connection = connection
+    original_registry = database._registry
+    database._registry = _PinnedRegistry
 
-    TrapForThreadLocalConnections.connection = connection
-    connection.begin()
-    transaction = connection.begin_nested()
-    database._registry = TrapForThreadLocalConnections
+    outer = connection.begin()
+    mocker.patch.object(database, "close_connection")
     try:
         yield
     finally:
-        transaction.rollback()
-    database.close()
+        if outer.is_active:
+            outer.rollback()
+        database._registry = original_registry
+        connection.close()
 
 
 @pytest.fixture

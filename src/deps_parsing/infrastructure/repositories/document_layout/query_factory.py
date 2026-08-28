@@ -64,7 +64,7 @@ class DocumentLayoutQueryFactory:
         ]
 
     def select_document_layout_info(self, layout_id: str, tenant_id: str) -> Select:
-        return select(self.document_layout_columns).where(
+        return select(*self.document_layout_columns).where(
             and_(
                 self._document_layout_schema.c.id == layout_id,
                 self._document_layout_schema.c.tenant_id == tenant_id,
@@ -109,12 +109,6 @@ class DocumentLayoutQueryFactory:
     def insert_document_layout(self) -> Insert:
         query = pg_insert(self._document_layout_schema)
         return query.on_conflict_do_update(
-            constraint="document_layout_id__tenant_id__pk",
-            set_={
-                "parsing_features": query.excluded.parsing_features,
-                "merged_tables": query.excluded.merged_tables,
-            },
-        ).on_conflict_do_update(
             constraint="document_layout_id_key",
             set_={
                 "parsing_features": query.excluded.parsing_features,
@@ -123,7 +117,7 @@ class DocumentLayoutQueryFactory:
         )
 
     def select_document_layout_id(self, layout_id: str, tenant_id: str) -> Select:
-        query = select([self._document_layout_schema.c.id])
+        query = select(self._document_layout_schema.c.id)
         return query.where(
             and_(self._document_layout_schema.c.id == layout_id, self._document_layout_schema.c.tenant_id == tenant_id),
         )
@@ -151,7 +145,7 @@ class DocumentLayoutQueryFactory:
         filtering: DocumentLayoutFeaturesFilter,
     ) -> Select:
         return (
-            select([func.count(self._page_schema.c.id).label("page_amount")])
+            select(func.count(self._page_schema.c.id).label("page_amount"))
             .select_from(self._base_join(filtering.parsing_type))
             .where(
                 and_(
@@ -173,10 +167,8 @@ class DocumentLayoutQueryFactory:
 
         return (
             select(
-                [
-                    self._page_schema.c.parsing_type,
-                    func.count(self._page_schema.c.id).label("page_amount"),
-                ],
+                self._page_schema.c.parsing_type,
+                func.count(self._page_schema.c.id).label("page_amount"),
             )
             .select_from(layout_with_page)
             .where(
@@ -252,7 +244,7 @@ class DocumentLayoutQueryFactory:
 
     def _build_pages_base_query(self, layout_id: str, parsing_type: ParsingType, page_batch: PageBatch | None) -> CTE:
         query = (
-            select([self._page_schema])
+            select(self._page_schema)
             .where(
                 and_(
                     self._page_schema.c.document_layout_id == layout_id,
@@ -270,7 +262,7 @@ class DocumentLayoutQueryFactory:
 
     def _build_pages_query_for_partial_dl(self, layout_id: str, wish_list: LayoutWishList) -> CTE:
         query = (
-            select([self._page_schema])
+            select(self._page_schema)
             .where(
                 and_(
                     self._page_schema.c.document_layout_id == layout_id,
@@ -288,28 +280,26 @@ class DocumentLayoutQueryFactory:
     def _images_by_page_query(self, pages_base: CTE) -> Select:
         return (
             select(
-                [
-                    self._image_schema.c.page_id,
-                    self._image_schema.c.parsing_type,
-                    func.jsonb_agg(
-                        func.jsonb_build_object(
-                            "id",
-                            self._image_schema.c.id,
-                            "order_num",
-                            self._image_schema.c.order_num,
-                            "title",
-                            self._image_schema.c.title,
-                            "file_path",
-                            self._image_schema.c.file_path,
-                            "polygon",
-                            self._image_schema.c.polygon,
-                            "description",
-                            self._image_schema.c.description,
-                        ),
-                    ).label("images"),
-                ],
+                self._image_schema.c.page_id,
+                self._image_schema.c.parsing_type,
+                func.jsonb_agg(
+                    func.jsonb_build_object(
+                        "id",
+                        self._image_schema.c.id,
+                        "order_num",
+                        self._image_schema.c.order_num,
+                        "title",
+                        self._image_schema.c.title,
+                        "file_path",
+                        self._image_schema.c.file_path,
+                        "polygon",
+                        self._image_schema.c.polygon,
+                        "description",
+                        self._image_schema.c.description,
+                    ),
+                ).label("images"),
             )
-            .where(self._image_schema.c.page_id.in_(select([pages_base.c.id])))
+            .where(self._image_schema.c.page_id.in_(select(pages_base.c.id)))
             .group_by(self._image_schema.c.page_id, self._image_schema.c.parsing_type)
         )
 
@@ -327,30 +317,28 @@ class DocumentLayoutQueryFactory:
     def _tables_by_page_query(self, pages_base: CTE) -> Select:
         return (
             select(
-                [
-                    self._table_schema.c.page_id,
-                    self._table_schema.c.parsing_type,
-                    func.jsonb_agg(
-                        func.jsonb_build_object(
-                            "id",
-                            self._table_schema.c.id,
-                            "order_num",
-                            self._table_schema.c.order_num,
-                            "column_count",
-                            self._table_schema.c.column_count,
-                            "row_count",
-                            self._table_schema.c.row_count,
-                            "polygon",
-                            self._table_schema.c.polygon,
-                            "confidence",
-                            self._table_schema.c.confidence,
-                            "cells",
-                            self._table_schema.c.cells,
-                        ),
-                    ).label("tables"),
-                ],
+                self._table_schema.c.page_id,
+                self._table_schema.c.parsing_type,
+                func.jsonb_agg(
+                    func.jsonb_build_object(
+                        "id",
+                        self._table_schema.c.id,
+                        "order_num",
+                        self._table_schema.c.order_num,
+                        "column_count",
+                        self._table_schema.c.column_count,
+                        "row_count",
+                        self._table_schema.c.row_count,
+                        "polygon",
+                        self._table_schema.c.polygon,
+                        "confidence",
+                        self._table_schema.c.confidence,
+                        "cells",
+                        self._table_schema.c.cells,
+                    ),
+                ).label("tables"),
             )
-            .where(self._table_schema.c.page_id.in_(select([pages_base.c.id])))
+            .where(self._table_schema.c.page_id.in_(select(pages_base.c.id)))
             .group_by(self._table_schema.c.page_id, self._table_schema.c.parsing_type)
         )
 
@@ -370,30 +358,28 @@ class DocumentLayoutQueryFactory:
     def _paragraphs_by_page_query(self, pages_base: CTE) -> Select:
         return (
             select(
-                [
-                    self._paragraph_schema.c.page_id,
-                    self._paragraph_schema.c.parsing_type,
-                    func.jsonb_agg(
-                        func.jsonb_build_object(
-                            "id",
-                            self._paragraph_schema.c.id,
-                            "order_num",
-                            self._paragraph_schema.c.order_num,
-                            "content",
-                            self._paragraph_schema.c.content,
-                            "confidence",
-                            self._paragraph_schema.c.confidence,
-                            "role",
-                            self._paragraph_schema.c.role,
-                            "polygon",
-                            self._paragraph_schema.c.polygon,
-                            "lines",
-                            self._paragraph_schema.c.lines,
-                        ),
-                    ).label("paragraphs"),
-                ],
+                self._paragraph_schema.c.page_id,
+                self._paragraph_schema.c.parsing_type,
+                func.jsonb_agg(
+                    func.jsonb_build_object(
+                        "id",
+                        self._paragraph_schema.c.id,
+                        "order_num",
+                        self._paragraph_schema.c.order_num,
+                        "content",
+                        self._paragraph_schema.c.content,
+                        "confidence",
+                        self._paragraph_schema.c.confidence,
+                        "role",
+                        self._paragraph_schema.c.role,
+                        "polygon",
+                        self._paragraph_schema.c.polygon,
+                        "lines",
+                        self._paragraph_schema.c.lines,
+                    ),
+                ).label("paragraphs"),
             )
-            .where(self._paragraph_schema.c.page_id.in_(select([pages_base.c.id])))
+            .where(self._paragraph_schema.c.page_id.in_(select(pages_base.c.id)))
             .group_by(self._paragraph_schema.c.page_id, self._paragraph_schema.c.parsing_type)
         )
 
@@ -411,26 +397,24 @@ class DocumentLayoutQueryFactory:
     def _key_value_pairs_by_page_query(self, pages_base: CTE) -> Select:
         return (
             select(
-                [
-                    self._key_value_pair_schema.c.page_id,
-                    self._key_value_pair_schema.c.parsing_type,
-                    func.jsonb_agg(
-                        func.jsonb_build_object(
-                            "id",
-                            self._key_value_pair_schema.c.id,
-                            "order_num",
-                            self._key_value_pair_schema.c.order_num,
-                            "key",
-                            self._key_value_pair_schema.c.key,
-                            "value",
-                            self._key_value_pair_schema.c.value,
-                            "confidence",
-                            self._key_value_pair_schema.c.confidence,
-                        ),
-                    ).label("key_value_pairs"),
-                ],
+                self._key_value_pair_schema.c.page_id,
+                self._key_value_pair_schema.c.parsing_type,
+                func.jsonb_agg(
+                    func.jsonb_build_object(
+                        "id",
+                        self._key_value_pair_schema.c.id,
+                        "order_num",
+                        self._key_value_pair_schema.c.order_num,
+                        "key",
+                        self._key_value_pair_schema.c.key,
+                        "value",
+                        self._key_value_pair_schema.c.value,
+                        "confidence",
+                        self._key_value_pair_schema.c.confidence,
+                    ),
+                ).label("key_value_pairs"),
             )
-            .where(self._key_value_pair_schema.c.page_id.in_(select([pages_base.c.id])))
+            .where(self._key_value_pair_schema.c.page_id.in_(select(pages_base.c.id)))
             .group_by(self._key_value_pair_schema.c.page_id, self._key_value_pair_schema.c.parsing_type)
         )
 
@@ -456,54 +440,52 @@ class DocumentLayoutQueryFactory:
     ) -> CTE:
         return (
             select(
-                [
-                    pages_base.c.document_layout_id,
-                    pages_base.c.parsing_type,
-                    func.jsonb_agg(
-                        func.jsonb_build_object(
-                            "id",
-                            pages_base.c.id,
-                            "page_number",
-                            pages_base.c.page_number,
-                            "parsing_type",
-                            pages_base.c.parsing_type,
-                            "dimension",
-                            pages_base.c.dimension,
-                            "languages",
-                            pages_base.c.languages,
-                            "file_path",
-                            pages_base.c.file_path,
-                            "transformations",
-                            pages_base.c.transformations,
-                            "groups",
-                            pages_base.c.groups,
-                            "images",
-                            (
-                                func.coalesce(images_by_page.c.images, "[]")
-                                if ParsingFeature.IMAGES in features
-                                else func.jsonb_build_array()
-                            ),
-                            "tables",
-                            (
-                                func.coalesce(tables_by_page.c.tables, "[]")
-                                if ParsingFeature.TABLES in features
-                                else func.jsonb_build_array()
-                            ),
-                            "paragraphs",
-                            (
-                                func.coalesce(paragraph_by_page.c.paragraphs, "[]")
-                                if ParsingFeature.TEXT in features
-                                else func.jsonb_build_array()
-                            ),
-                            "key_value_pairs",
-                            (
-                                func.coalesce(key_value_pairs_by_page.c.key_value_pairs, "[]")
-                                if ParsingFeature.KEY_VALUE_PAIRS in features
-                                else func.jsonb_build_array()
-                            ),
+                pages_base.c.document_layout_id,
+                pages_base.c.parsing_type,
+                func.jsonb_agg(
+                    func.jsonb_build_object(
+                        "id",
+                        pages_base.c.id,
+                        "page_number",
+                        pages_base.c.page_number,
+                        "parsing_type",
+                        pages_base.c.parsing_type,
+                        "dimension",
+                        pages_base.c.dimension,
+                        "languages",
+                        pages_base.c.languages,
+                        "file_path",
+                        pages_base.c.file_path,
+                        "transformations",
+                        pages_base.c.transformations,
+                        "groups",
+                        pages_base.c.groups,
+                        "images",
+                        (
+                            func.coalesce(images_by_page.c.images, "[]")
+                            if ParsingFeature.IMAGES in features
+                            else func.jsonb_build_array()
                         ),
-                    ).label("pages"),
-                ],
+                        "tables",
+                        (
+                            func.coalesce(tables_by_page.c.tables, "[]")
+                            if ParsingFeature.TABLES in features
+                            else func.jsonb_build_array()
+                        ),
+                        "paragraphs",
+                        (
+                            func.coalesce(paragraph_by_page.c.paragraphs, "[]")
+                            if ParsingFeature.TEXT in features
+                            else func.jsonb_build_array()
+                        ),
+                        "key_value_pairs",
+                        (
+                            func.coalesce(key_value_pairs_by_page.c.key_value_pairs, "[]")
+                            if ParsingFeature.KEY_VALUE_PAIRS in features
+                            else func.jsonb_build_array()
+                        ),
+                    ),
+                ).label("pages"),
             )
             .select_from(
                 self._join_content_tables(
@@ -557,7 +539,7 @@ class DocumentLayoutQueryFactory:
         parsing_type: ParsingType,
     ) -> Select:
         return (
-            select([*self.document_layout_columns, func.coalesce(pages_with_content.c.pages, "[]").label("pages")])
+            select(*self.document_layout_columns, func.coalesce(pages_with_content.c.pages, "[]").label("pages"))
             .select_from(
                 self._document_layout_schema.outerjoin(
                     pages_with_content,
